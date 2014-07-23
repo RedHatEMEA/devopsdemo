@@ -1,0 +1,56 @@
+heat_template_version: 2013-05-23
+
+parameters:
+  public_net:
+    description: UUID of public network
+    type: string
+  cidr:
+    description: subnet of new network (e.g. 10.0.0.0/24)
+    type: string
+  gateway_ip:
+    description: external gateway IP on new network (e.g. 10.0.0.254)
+    type: string
+  start:
+    description: starting DHCP address on new network (e.g. 10.0.0.1)
+    type: string
+  end:
+    description: ending DHCP address on new network (e.g. 10.0.0.253)
+    type: string
+  dns_nameservers:
+    description: DNS nameserver on new network (e.g. [ 8.8.8.8 ])
+    type: comma_delimited_list
+
+resources:
+  net:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: net }
+      cidr: { get_param: cidr }
+      gateway_ip: { get_param: gateway_ip } 
+      allocation_pools:
+        - start: { get_param: start }
+          end: { get_param: end }
+      dns_nameservers: { get_param: dns_nameservers }
+
+  router:
+    type: OS::Neutron::Router
+
+  router_gateway:
+    type: OS::Neutron::RouterGateway
+    properties:
+      router_id: { get_resource: router }
+      network_id: { get_param: public_net }
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { Ref: router }
+      subnet_id: { Ref: subnet }
+
+outputs:
+  id:
+    value: { get_resource: net }
+    description: ID of created network
