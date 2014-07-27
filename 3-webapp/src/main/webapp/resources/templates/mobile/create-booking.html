@@ -1,0 +1,42 @@
+<div data-role="header" data-position="fixed">
+    <a href="#" class="ui-btn ui-icon-home ui-btn-icon-left">Home</a>
+    <h1>Book tickets</h1>
+</div>
+<div class="ui-content">
+    <p>
+       <h3><%=show.event.name%></h3>
+    </p>
+    <p>
+      <%=show.venue.name%>
+    <p>
+
+    <p>
+      <small><%=new Date(performance.date).toPrettyString()%></small>
+    </p>
+    <div id="sectionSelectorPlaceholder">
+        <div class="ui-field-contain">
+            <label for="sectionSelect">Section</label>
+            <select id="sectionSelect">
+                <option value="-1" selected>Choose a section</option>
+                <% _.each(sections, function(section) { %>
+                <option value="<%=section.id%>"><%=section.name%> - <%=section.description%></option>
+                <% }) %>
+            </select>
+        </div>
+
+    </div>
+    <div id="ticketCategoriesViewPlaceholder" style="display:none;"></div>
+
+    <div class="fieldcontain">
+        <label>Contact email</label>
+        <input type='email' id='email' name='email' required placeholder="Email" value="<%=email%>" />
+        <span id="error-email" class="error" />
+    </div>
+</div>
+
+<div data-role="footer" data-position="fixed">
+    <div class="ui-grid-a">
+        <div class="ui-block-a"><a href="#" class="ui-btn ui-icon-delete ui-btn-icon-left block-btn">Cancel</a></div>
+        <div class="ui-block-b"><a id="confirmBooking" class="ui-btn ui-btn-b ui-icon-check ui-btn-icon-left block-btn" disabled>Checkout</a></div>
+    </div>
+</div>

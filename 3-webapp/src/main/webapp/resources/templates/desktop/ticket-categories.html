@@ -1,0 +1,30 @@
+<% if (ticketPrices.length > 0) { %>
+<form class="form-horizontal">
+    <% _.each(ticketPrices, function(ticketPrice) { %>
+    <div class="form-group" id="ticket-category-fieldset-<%=ticketPrice.id%>">
+        <label class="col-md-3 control-label"><strong><%=ticketPrice.ticketCategory.description%></strong></label>
+
+        <div class="col-md-9">
+            <div class="input-group">
+                <input class="form-control col-md-6" rel="tooltip" title="Enter value"
+                       data-tm-id="<%=ticketPrice.id%>"
+                       placeholder="Number of tickets"
+                       name="tickets-<%=ticketPrice.ticketCategory.id%>"/>
+                <span class="input-group-addon">@ $<%=ticketPrice.price%></span>
+
+                <p class="help-block" id="error-input-<%=ticketPrice.id%>"></p>
+            </div>
+        </div>
+    </div>
+    <% }) %>
+
+<p>&nbsp;</p>
+
+<div class="form-group">
+    <div class="col-md-offset-2">
+        <input type="button" class="btn btn-primary" disabled="true" name="add" value="Add tickets"/>
+    </div>
+</div>
+</div>
+</form>
+<% } %>

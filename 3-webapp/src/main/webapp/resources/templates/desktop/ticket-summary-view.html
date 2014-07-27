@@ -1,0 +1,36 @@
+<div class="col-md-12">
+    <% if (tickets.length>0) { %>
+    <table class="table table-bordered table-condensed" style="background-color: #fffffa;">
+        <thead>
+        <tr>
+            <th colspan="7"><strong>Requested tickets</strong></th>
+        </tr>
+        <tr>
+            <th>Section</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody id="ticketRequestSummary">
+        <% _.each(tickets, function (ticketRequest, index, tickets) { %>
+        <tr>
+            <td><%= ticketRequest.ticketPrice.section.name %></td>
+            <td><%= ticketRequest.ticketPrice.ticketCategory.description %></td>
+            <td><%= ticketRequest.quantity %></td>
+            <td>$<%=ticketRequest.ticketPrice.price%></td>
+            <td><span class="glyphicon glyphicon-trash" data-index='<%= index %>'/></td>
+        </tr>
+        <% }); %>
+        </tbody>
+    </table>
+    <p/>
+    <div class="row">
+        <div class="col-md-5"><strong>Total ticket count:</strong> <%= totals.tickets %></div>
+        <div class="col-md-5"><strong>Total price:</strong> $<%=totals.price%></div>
+    </div>
+    <% } else { %>
+    No tickets requested.
+    <% } %>
+</div>

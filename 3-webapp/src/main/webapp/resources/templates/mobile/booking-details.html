@@ -1,0 +1,37 @@
+<div data-role="header" data-position="fixed">
+    <a href="#" class="ui-btn ui-icon-home ui-btn-icon-left">Home</a>
+    <h1>Booking complete</h1>
+</div>
+<div class="ui-content">
+    <table id="confirm_tbl">
+        <thead>
+        <tr>
+            <td colspan="5" align="center"><strong>Booking <%=id%></strong></td>
+        <tr>
+        <tr>
+            <th>Ticket #</th>
+            <th>Category</th>
+            <th>Section</th>
+            <th>Row</th>
+            <th>Seat</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% $.each(_.sortBy(tickets, function(ticket) {return ticket.id}), function (i, ticket) { %>
+        <tr>
+            <td><%= ticket.id %></td>
+            <td><%=ticket.ticketCategory.description%></td>
+            <td><%=ticket.seat.section.name%></td>
+            <td><%=ticket.seat.rowNumber%></td>
+            <td><%=ticket.seat.number%></td>
+        </tr>
+        <% }) %>
+        </tbody>
+    </table></div>
+<div data-role="footer" data-position="fixed">
+
+    <div class="ui-block-b">
+        <a id="back" href="#" class="ui-btn ui-icon-back ui-btn-icon-left block-btn">Back</a>
+    </div>
+
+</div>

@@ -1,0 +1,69 @@
+<div class="row">
+    <div class="col-md-3 col-md-offset-1">
+        <div class="panel" id="itemMenu">
+
+            <%
+            _.each(cities, function (city) {
+            %>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a class="panel-toggle"
+                       data-target="#city-<%=city%>-collapsible" data-toggle="collapse"
+                       data-parent="#itemMenu"><%= city %></a>
+                </div>
+                <div id="city-<%=city%>-collapsible" class="panel-collapse collapse">
+                    <div id="city-<%=city%>" class="panel-body">
+
+                    <%
+                    _.each(model.models, function (model) {
+                    if (model.get('address').city == city) {
+                    %>
+                    <p><a href="#venues/<%=model.attributes.id%>" rel="popover"
+                       data-content="<%- model.attributes.description%>"
+                       data-original-title="<%- model.attributes.name%>"><%=model.attributes.name%></a></p>
+                    <% }
+                    });
+                    %>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+    <div id='itemSummary' class="col-md-8 hidden-sm hidden-xs">
+        <div class="carousel-container">
+            <div id="venueCarousel" class="carousel">
+                <!-- Carousel items -->
+                <div class="carousel-inner">
+                    <%_.each(model.models, function(model) {
+                        if(model.get('mediaItem')) {
+                    %>
+                    <div class="item">
+                        <img src='<%=config.baseUrl%>rest/media/<%=model.attributes.mediaItem.id%>'/>
+
+                        <div class="carousel-caption">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <h4><%=model.attributes.name%></h4>
+                                    <p><%=model.attributes.description%></p>
+                                </div>
+                                <div class="col-md-3">
+                                    <a class="btn btn-danger action" href="#venues/<%=model.attributes.id%>">Find shows</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <%  }
+                     }); %>
+                </div>
+                <!-- Carousel nav -->
+                <a class="carousel-control left" href="#venueCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="carousel-control right" href="#venueCarousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<div data-role="header">
+    <a href="#" class="ui-btn ui-icon-home ui-btn-icon-left">Home</a>
+    <h3>Locations</h3>
+</div>
+<div class="ui-content">
+    <div id="itemMenu" data-role="collapsible-set" data-inset="false">
+        <%
+        _.each(cities, function (city) {
+        %>
+        <div data-role="collapsible">
+            <h2><%= city %></h2>
+            <ul id="cityMenu" data-role="listview" data-inset="true">
+            <%
+            _.each(model.models, function (model) {
+                if (model.get('address').city == city) {
+                %>
+                <li><a href="#venues/<%=model.attributes.id%>"><%=model.attributes.name%></a></li>
+                <% }
+            });
+            %>
+            </ul>
+        </div>
+        <% }); %>
+    </div>
+</div>

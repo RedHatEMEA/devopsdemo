@@ -1,0 +1,43 @@
+<div data-role="header" data-position="fixed">
+    <a href="#" class="ui-btn ui-icon-home ui-btn-icon-left">Home</a>
+    <h3>Book tickets</h3>
+</div>
+<div class="ui-content">
+    <h3><%=name%></h3>
+    <img width='100px' src='<%=baseUrl%>rest/media/<%=mediaItem.id%>'/>
+    <p><%=description%></p>
+    <div class="ui-field-contain">
+        <label for="showSelector"><strong>What</strong></label>
+        <select id='showSelector' data-mini='true'/>
+    </div>
+
+    <div data-role="collapsible" data-content-theme="c" style="display: none;"
+         id="detailsCollapsible">
+        <h3>Show details</h3>
+
+        <div id="venueEventDescription">
+        </div>
+    </div>
+
+    <div data-role='fieldcontain'>
+        <fieldset data-role='controlgroup'>
+            <legend><strong>When</strong></legend>
+            <label for="dayPicker">When:</label>
+            <select id='dayPicker' data-mini='true'/>
+
+            <label for="performanceTimes">When:</label>
+            <select id="performanceTimes" data-mini='true'/>
+
+        </fieldset>
+    </div>
+
+</div>
+<div data-role="footer" data-position="fixed">
+    <div class="ui-grid-b">
+        <div class="ui-block-a"></div>
+        <div class="ui-block-b"></div>
+        <div class="ui-block-c">
+            <a id='bookButton' class="ui-btn ui-btn-b ui-icon-check ui-btn-icon-left block-btn">Book</a>
+        </div>
+    </div>
+</div>

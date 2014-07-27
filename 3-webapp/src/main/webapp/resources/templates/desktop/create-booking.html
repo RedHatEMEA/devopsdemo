@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="special-title light-font"><%=show.event.name%>
+            <small><%=show.venue.name%>, <%=new Date(performance.date).toPrettyString()%></p></small>
+        </h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="well">
+            <h3 class="page-header">Select tickets</h3>
+            <form class="form-horizontal">
+                <div id="sectionSelectorPlaceholder">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="sectionSelect"><strong>Section</strong></label>
+                        <div class="col-md-9">
+                            <select id="sectionSelect" class="form-control">
+                                <option value="-1" selected="true">Choose a section</option>
+                                <% _.each(sections, function(section) { %>
+                                <option value="<%=section.id%>"><%=section.name%> - <%=section.description%></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div id="ticketCategoriesViewPlaceholder"></div>
+        </div>
+    </div>
+    <div id="request-summary" class="col-md-5 col-md-offset-1">
+        <div class="well">
+            <h3 class="page-header">Order summary</h3>
+            <div id="ticketSummaryView" class="row"/>
+            <h3 class="page-header">Checkout</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <form>
+                        <div class="form-group">
+                            <input type='email' id="email" class="form-control" placeholder="Email" required/>
+                            <p class="help-block error-notification"  id="error-email"></p>
+                        </div>
+                        <div class="form-group">
+                            <input type='button' class="btn btn-primary" name="submit" value="Checkout"
+                                   disabled="true"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

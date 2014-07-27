@@ -1,0 +1,67 @@
+<div class="container">
+    <h3 class="page-header light-font special-title">Current bookings</h3>
+    <div class="row">
+        <div class='col-md-12'>
+            <table class='table table-bordered' style="background: #fffffa;">
+                <thead>
+                <tr>
+                    <th>Booking #</th>
+                    <th>Purchaser</th>
+                    <th>Created on</th>
+                    <th>Total tickets</th>
+                    <th>Total price</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id='bookingList'>
+                <% _.each(model.models, function (booking) { %>
+                <tr>
+                    <td><a href="#bookings/<%=booking.id%>"><%=booking.attributes.id%></a></td>
+                    <td><%=booking.attributes.contactEmail%></td>
+                    <td><%=new Date(booking.attributes.createdOn).toPrettyString()%></td>
+                    <td><%=booking.attributes.tickets.length%></td>
+                    <td>$<%=booking.attributes.totalTicketPrice%></td>
+                    <td><span data-tm-role='delete' data-tm-id="<%=booking.attributes.id%>"
+                           class="glyphicon glyphicon-trash" title="Delete booking"></span></td>
+                </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <% if (paginator.totalPageCount > 0) { %>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="pagination pull-right">
+                <% if (paginator.currentPage>1) { %>
+                <li>
+                    <a data-tm-role="page" data-tm-page="<%=paginator.currentPage-1%>">&#171;Previous</a>
+                </li>
+                <% } %>
+                <% if ((paginator.currentPage - 2)>1) { %>
+                <li><a data-tm-role="page" data-tm-page="1">1</a></li>
+                <% } %>
+                <% if ((paginator.currentPage - 2)>2) { %>
+                <li class="disabled"><a class="disabled">...</a></li>
+                <% } %>
+                <% for (i = Math.max(1, paginator.currentPage-2);
+                        i <= Math.min(paginator.currentPage+2, paginator.totalPageCount);
+                        i++) { %>
+                <li class='<%=(paginator.currentPage==i)?"active":""%>'><a data-tm-role="page" data-tm-page="<%=i%>"><%=i%></a></li>
+                <% } %>
+                <% if ((paginator.currentPage + 3)< paginator.totalPageCount) { %>
+                <li class="disabled"><a>...</a></li>
+                <% } %>
+                <% if ((paginator.currentPage + 2)< paginator.totalPageCount) { %>
+                <li><a data-tm-role="page" data-tm-page="<%=paginator.totalPageCount%>"><%=paginator.totalPageCount%></a></li>
+                <% } %>
+                <% if (paginator.currentPage< paginator.totalPageCount) { %>
+                <li>
+                    <a data-tm-role="page" data-tm-page="<%=paginator.currentPage+1%>">Next&#187;</a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    <% } %>
+    </div>
+</div>
