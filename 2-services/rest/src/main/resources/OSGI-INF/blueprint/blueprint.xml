@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+	xmlns:cxf="http://cxf.apache.org/blueprint/core" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+	xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+	xsi:schemaLocation="
+      http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+      http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+      http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+	<jaxrs:server id="demoService" address="/rest">
+		<jaxrs:serviceBeans>
+			<ref component-id="bookingService" />
+			<ref component-id="eventService" />
+			<ref component-id="mediaService" />
+			<ref component-id="showService" />
+			<ref component-id="venueService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:features>
+			<bean class="org.apache.cxf.jaxrs.swagger.SwaggerFeature" />
+		</jaxrs:features>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+
+	<cxf:bus>
+		<cxf:features>
+			<cxf:logging />
+		</cxf:features>
+		<cxf:outInterceptors>
+			<ref component-id="headerInterceptor" />
+		</cxf:outInterceptors>
+	</cxf:bus>
+
+	<bean id="bookingService" class="org.jboss.jdf.example.ticketmonster.rest.BookingService"
+		activation="eager">
+
+		<jpa:context unitname="primary" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+
+		<property name="seatAllocationService" ref="seatAllocationService" />
+
+	</bean>
+
+	<bean id="eventService" class="org.jboss.jdf.example.ticketmonster.rest.EventService"
+		activation="eager">
+
+		<jpa:context unitname="primary" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+
+	</bean>
+
+	<bean id="mediaService" class="org.jboss.jdf.example.ticketmonster.rest.MediaService"
+		activation="eager">
+
+		<jpa:context unitname="primary" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+
+		<property name="mediaManager" ref="mediaManager" />
+	</bean>
+
+	<bean id="showService" class="org.jboss.jdf.example.ticketmonster.rest.ShowService"
+		activation="eager">
+
+		<jpa:context unitname="primary" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+
+	</bean>
+
+	<bean id="venueService" class="org.jboss.jdf.example.ticketmonster.rest.VenueService"
+		activation="eager">
+
+		<jpa:context unitname="primary" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+
+	</bean>
+
+	<bean id="mediaManager"
+		class="org.jboss.jdf.example.ticketmonster.service.MediaManager"
+		activation="eager" />
+
+	<bean id="seatAllocationService"
+		class="org.jboss.jdf.example.ticketmonster.service.SeatAllocationService"
+		activation="eager">
+
+		<jpa:context unitname="primary" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+
+	</bean>
+
+	<bean id="headerInterceptor" class="uk.minter.rest.HeaderInterceptor"
+		activation="eager" />
+
+</blueprint>
