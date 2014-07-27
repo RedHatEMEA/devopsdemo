@@ -15,22 +15,23 @@
 -->
 <blueprint
   xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0">
 
+    <cm:property-placeholder id="props"
+                             persistent-id="database">
+        <cm:default-properties>
+            <cm:property name="port" value="54321"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+    
 	<bean id="data_source_postgresql" class="org.postgresql.ds.PGPoolingDataSource"
 		destroy-method="close">
-		<property name="serverName" value="127.0.0.1" />
-		<property name="databaseName" value="ticketmonster" />
-		<property name="portNumber" value="5432" />
-		<property name="user" value="admin" />
-		<property name="password" value="password" />
-	    <!--
-		<property name="serverName" value="10.33.7.16" />
-		<property name="databaseName" value="jbosseap" />
-		<property name="portNumber" value="43791" />
-		<property name="user" value="adminmtywxhg" />
-		<property name="password" value="k4fwIRtellev" />
-		 -->
+		<property name="serverName" value="${serverName}" />
+		<property name="databaseName" value="${databaseName}" />
+		<property name="portNumber" value="${portNumber}" />
+		<property name="user" value="${user}" />
+		<property name="password" value="${password}" />
 		<property name="dataSourceName" value="myConnectionPool" />
 		<property name="initialConnections" value="2" />
 		<property name="maxConnections" value="4" />
@@ -41,4 +42,5 @@
 			<entry key="osgi.jndi.service.name" value="jdbc/postgresqlds" />
 		</service-properties>
 	</service>
+	 
 </blueprint>

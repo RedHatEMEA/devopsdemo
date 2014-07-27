@@ -30,6 +30,7 @@
     <module>feature-persistence</module>
     <module>datasource-postgresql</module>
     <module>rest</module>
+    <module>webapp</module>
   </modules>
 
   <dependencyManagement>
