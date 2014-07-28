@@ -37,7 +37,7 @@
 			<version>4.2.7.Final</version>
 			<scope>provided</scope>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>4.3.1.Final</version>
@@ -67,5 +67,4 @@
 			org.jboss.jdf.example.ticketmonster.util.qualifier, uk.minter.rest</osgi.private.pkg>
 		<osgi.meta.persistence>META-INF/persistence.xml</osgi.meta.persistence>
 	</properties>
-
 </project>
