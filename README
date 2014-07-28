@@ -1,0 +1,20 @@
+DevOps demo v0.1
+Jim Minter <jminter@redhat.com>, 28/07/2014
+
+
+Getting started
+---------------
+
+* You'll need access to an OpenStack project and a keystonerc file (hint: go to http://<openstack-hostname>/dashboard/project/access_and_security/api_access/openrc/ ).
+* Create yourself an OpenStack SSH keypair and remember its name.
+* For now, ensure all IP traffic can pass in the default OpenStack security group firewall.
+
+Create the file infrastructure/environment.yaml, based on infrastructure/environment.yaml.example.
+* public_net should be populated with the UUID of your public network (use the 'neutron net-list' to get this).
+* key_name should be the name of the keypair you created earlier.
+
+* "Source" your keystonerc file by typing the following:
+  $ . keystonerc
+* Run deploy/infrastructure.sh to create your DNS and OpenShift servers.
+
+* Run deploy/application.sh to deploy the application.

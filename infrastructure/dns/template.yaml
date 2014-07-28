@@ -1,0 +1,64 @@
+heat_template_version: 2013-05-23
+
+parameters:
+  key_name:
+    description: Keypair name for server access
+    type: string
+  public_net:
+    description: UUID of public network
+    type: string
+  dns_nameservers:
+    description: public DNS servers
+    type: comma_delimited_list
+  image:
+    default: rhel-guest-image-6-6.5-20140603.0-heat-agent
+    type: string
+
+resources:
+  net_dns:
+    type: Library::Net
+    properties:
+      public_net: { get_param: public_net }
+      cidr: 172.16.0/24
+      gateway_ip: 172.16.0.254
+      start: 172.16.0.1
+      end: 172.16.0.253
+      dns_nameservers: { get_param: dns_nameservers }
+
+  dns_server:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: image }
+      flavor: m1.small
+      key_name: { get_param: key_name }
+      networks:
+        - port: { get_resource: dns_port }
+      user_data_format: SOFTWARE_CONFIG
+
+  dns_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_attr: [ net_dns, id ] }
+
+  dns_floatingip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: { get_param: public_net } 
+      port_id: { get_resource: dns_port }
+
+  dns_softwareconfig:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: script
+      config: { get_file: dns.sh }
+
+  dns_softwaredeployment:
+    type: OS::Heat::SoftwareDeployment
+    properties:
+      config: { get_resource: dns_softwareconfig }
+      server: { get_resource: dns_server }
+      input_values: {}
+
+outputs:
+  DNS_IP:
+    value: { get_attr: [ dns_floatingip, floating_ip_address ] }

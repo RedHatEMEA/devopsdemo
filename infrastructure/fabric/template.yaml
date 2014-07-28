@@ -7,14 +7,24 @@ parameters:
   public_net:
     description: UUID of public network
     type: string
-  private_net:
-    description: UUID of private network
-    type: string
+  dns_nameservers:
+    description: public DNS servers
+    type: comma_delimited_list
   image:
     default: rhel-guest-image-6-6.5-20140603.0-heat-agent
     type: string
 
 resources:
+  net_fabric:
+    type: Library::Net
+    properties:
+      public_net: { get_param: public_net }
+      cidr: 172.16.2/24
+      gateway_ip: 172.16.2.254
+      start: 172.16.2.1
+      end: 172.16.2.253
+      dns_nameservers: { get_param: dns_nameservers }
+
   root_server:
     type: OS::Nova::Server
     properties:
@@ -28,7 +38,7 @@ resources:
   root_port:
     type: OS::Neutron::Port
     properties:
-      network_id: { get_param: private_net }
+      network_id: { get_attr: [ net_fabric, id ] }
 
   root_floatingip:
     type: OS::Neutron::FloatingIP
@@ -63,7 +73,7 @@ resources:
   root2_port:
     type: OS::Neutron::Port
     properties:
-      network_id: { get_param: private_net }
+      network_id: { get_attr: [ net_fabric, id ] }
 
   root2_floatingip:
     type: OS::Neutron::FloatingIP
@@ -100,7 +110,7 @@ resources:
   root3_port:
     type: OS::Neutron::Port
     properties:
-      network_id: { get_param: private_net }
+      network_id: { get_attr: [ net_fabric, id ] }
 
   root3_floatingip:
     type: OS::Neutron::FloatingIP
@@ -124,17 +134,17 @@ resources:
         CONF_NODE: root3
         CONF_NODE1_IP_ADDR: { get_attr: [ root_floatingip, floating_ip_address ] }
 
-  rootA_softwareconfig:
+  root_softwareconfig2:
     type: OS::Heat::SoftwareConfig
     properties:
       group: script
       config: { get_file: fabric2.sh }
 
-  rootA_softwaredeployment:
+  root_softwaredeployment2:
     depends_on: [ root2_softwaredeployment, root3_softwaredeployment ]
     type: OS::Heat::SoftwareDeployment
     properties:
-      config: { get_resource: rootA_softwareconfig }
+      config: { get_resource: root_softwareconfig2 }
       server: { get_resource: root_server }
       input_values: {}
 

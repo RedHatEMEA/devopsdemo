@@ -40,14 +40,19 @@ class API(object):
 
 
 if __name__ == "__main__":
-    # still need to set up initial domain...  ssh keys?
-    api = API("https://10.33.7.66/broker/rest", ("demo", "demo"), verify = False)
+    endpoint = sys.argv[1] # "https://10.33.7.66/broker/rest"
+    name = sys.argv[2] # jbosseap
+    baseurl = sys.argv[3] # "http://10.33.7.1/cxf/"
+    artifact_url = sys.argv[4]
+
+    api = API(endpoint, ("demo", "demo"), verify = False)
     id = api.application_create("demo", 
-                                name = "jbosseap",
+                                name = name,
                                 cartridges = "jbosseap-6",
                                 gear_size = "small",
                                 environment_variables = [{"name": "BASEURL",
-                                                          "value": sys.argv[1]}])
+                                                          "value": baseurl}])
 
-    print id
-    api.application_deploy(id, artifact_url="http://10.33.11.12:8081/nexus/content/repositories/snapshots/com/redhat/ticketmonster/webapp/0.1-SNAPSHOT/webapp-0.1-20140728.102124-4.tar.gz")
+    api.application_deploy(id, artifact_url = artifact_url)
+
+    print "https://%s-demo.ose.saleslab.fab.redhat.com" % name

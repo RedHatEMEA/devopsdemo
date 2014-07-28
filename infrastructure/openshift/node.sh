@@ -1,13 +1,14 @@
 #!/bin/bash -x
 
+# CONF_BROKER_IP_ADDR
+
 export SATELLITE_IP_ADDR=${SATELLITE_IP_ADDR:-10.33.11.10}
 export PROXY_IP_ADDR=${PROXY_IP_ADDR:-10.33.11.12}
-# CONF_NAMED_IP_ADDR
-# CONF_BROKER_IP_ADDR
 export CONF_BIND_KEY=${CONF_BIND_KEY:-sM6LJvrKqb2R074G8vlGf7x02s9AsZ6RpldyQpHDqyI=}
 export CONF_DOMAIN=${CONF_DOMAIN:-ose.saleslab.fab.redhat.com}
 
 export CONF_NODE_IP_ADDR=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+export CONF_NAMED_IP_ADDR=$(sed -ne '/nameserver/ {s/nameserver //; p; }' /etc/resolv.conf)
 export CONF_NODE_HOSTNAME=$(hostname).$CONF_DOMAIN
 export CONF_INSTALL_COMPONENTS=node
 export CONF_KEEP_HOSTNAME=true

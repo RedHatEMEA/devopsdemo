@@ -1,0 +1,64 @@
+heat_template_version: 2013-05-23
+
+parameters:
+  key_name:
+    description: Keypair name for server access
+    type: string
+  public_net:
+    description: UUID of public network
+    type: string
+  dns_nameservers:
+    description: public DNS servers
+    type: comma_delimited_list
+  image:
+    default: rhel-guest-image-6-6.5-20140603.0-heat-agent
+    type: string
+
+resources:
+  net_db:
+    type: Library::Net
+    properties:
+      public_net: { get_param: public_net }
+      cidr: 172.16.3/24
+      gateway_ip: 172.16.3.254
+      start: 172.16.3.1
+      end: 172.16.3.253
+      dns_nameservers: { get_param: dns_nameservers }
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: image }
+      flavor: m1.small
+      key_name: { get_param: key_name }
+      networks:
+        - port: { get_resource: port }
+      user_data_format: SOFTWARE_CONFIG
+
+  port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_attr: [ net_db, id ] }
+
+  floatingip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: { get_param: public_net } 
+      port_id: { get_resource: port }
+
+  softwareconfig:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: script
+      config: { get_file: postgresql.sh }
+
+  softwaredeployment:
+    type: OS::Heat::SoftwareDeployment
+    properties:
+      config: { get_resource: softwareconfig }
+      server: { get_resource: server }
+      input_values: {}
+
+outputs:
+  DATABASE_IP:
+    value: { get_attr: [ floatingip, floating_ip_address ] }
