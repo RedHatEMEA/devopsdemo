@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-PREFIX=$(utils/rnd.py)
+PREFIX=${PREFIX:-$(utils/rnd.py)}
 
 if [ -z $OS_AUTH_URL ]; then
   echo "error: must set OpenStack credentials"
