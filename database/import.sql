@@ -259,7 +259,7 @@ ALTER SEQUENCE section_id_seq OWNED BY section.id;
 
 CREATE TABLE sectionallocation (
     id bigint NOT NULL,
-    allocated bytea,
+    allocated oid,
     occupiedcount integer NOT NULL,
     version bigint NOT NULL,
     performance_id bigint NOT NULL,
