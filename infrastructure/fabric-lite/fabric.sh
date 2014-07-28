@@ -51,12 +51,12 @@ fuse_create_admin_user() {
 }
 
 fuse_set_nexus() {
-  sed -ie "/^org.ops4j.pax.url.mvn.repositories=/,/[^\]$/ d; $ a\
+  sed -i -e "/^org.ops4j.pax.url.mvn.repositories=/,/[^\]$/ d; $ a\
 org.ops4j.pax.url.mvn.repositories=http://$PROXY_IP_ADDR:8081/nexus/content/groups/public@id=mirror.repo" /usr/local/$FUSE_VERSION/fabric/import/fabric/configs/versions/1.0/profiles/default/io.fabric8.agent.properties
 }
 
 fuse_disable_indexer() {
-  sed -ie '/<feature>hawtio-maven-indexer<\/feature>/ d' /usr/local/$FUSE_VERSION/system/io/hawt/hawtio-karaf/1.2-redhat-379/hawtio-karaf-1.2-redhat-379-features.xml
+  sed -i -e '/<feature>hawtio-maven-indexer<\/feature>/ d' /usr/local/$FUSE_VERSION/system/io/hawt/hawtio-karaf/1.2-redhat-379/hawtio-karaf-1.2-redhat-379-features.xml
 }
 
 fuse_start() {

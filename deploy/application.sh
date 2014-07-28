@@ -1,6 +1,7 @@
 #!/bin/bash -ex
 
 PREFIX=${PREFIX:-$(utils/rnd.py)}
+VERSION=${VERSION:-8}
 
 if [ -z $OS_AUTH_URL ]; then
   echo "error: must set OpenStack credentials"
@@ -26,12 +27,13 @@ deploy_app_fabric() {
   TMPDIR=$(mktemp -d)
 
   pushd $TMPDIR
-  ping -c 1 $ROOT_IP &>/dev/null
+  ping -c 2 $ROOT_IP &>/dev/null || true
   git clone -b 1.0 http://admin:admin@$ROOT_IP:8181/git/fabric
   popd
 
   mkdir $TMPDIR/fabric/fabric/profiles/ticketmonster.profile
   cp -a ../application/ticketmonster.profile/io.fabric8.agent.properties $TMPDIR/fabric/fabric/profiles/ticketmonster.profile
+  sed -i -e "s/SNAPSHOT/$VERSION/g" $TMPDIR/fabric/fabric/profiles/ticketmonster.profile/io.fabric8.agent.properties
   cat >$TMPDIR/fabric/fabric/profiles/ticketmonster.profile/database.properties <<EOF
 serverName = $DATABASE_IP
 portNumber = 5432
@@ -53,7 +55,7 @@ EOF
 }
 
 deploy_app_openshift() {
-  utils/deploy-openshift.py https://$BROKER_IP/broker/rest ${PREFIX}monster $CONTAINER_URL/cxf/ "http://10.33.11.12:8081/nexus/content/repositories/snapshots/com/redhat/ticketmonster/webapp/0.1-SNAPSHOT/webapp-0.1-20140728.102124-4.tar.gz"
+  utils/deploy-openshift.py https://$BROKER_IP/broker/rest ${PREFIX}monster $CONTAINER_URL/cxf/ "http://10.33.11.12:8081/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/0.1-$VERSION/webapp-0.1-$VERSION.tar.gz"
 }
 
 get_dns_ip

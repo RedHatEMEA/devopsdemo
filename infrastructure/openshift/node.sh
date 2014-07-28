@@ -57,7 +57,7 @@ ose_install() {
 }
 
 ose_node_configure() {
-  sed -ie 's/^cpu_cfs_quota_us=.*/cpu_cfs_quota_us=-1/' /etc/openshift/resource_limits.conf 
+  sed -i -e 's/^cpu_cfs_quota_us=.*/cpu_cfs_quota_us=-1/' /etc/openshift/resource_limits.conf
 
   cat >/usr/libexec/openshift/cartridges/jbosseap/versions/shared/standalone/configuration/settings.base.xml <<EOF
 <settings>
