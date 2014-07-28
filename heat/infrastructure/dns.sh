@@ -10,24 +10,40 @@ export CONF_FORWARD_DNS=true
 export CONF_KEEP_HOSTNAME=true
 export CONF_KEEP_NAMESERVERS=true
 
-ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime 
-
-for CHANNEL in rhel-x86_64-server-6
-do
-  curl -so /etc/yum.repos.d/$CHANNEL.repo http://$SATELLITE_IP_ADDR:8085/$CHANNEL.repo
-done
-
-yum -y install ethtool
-
-cat >>/etc/rc.local <<EOF
+fix_gso() {
+  cat >>/etc/rc.local <<EOF
 ethtool -K eth0 gso off
 ethtool -K eth0 tso off
 EOF
 
-ethtool -K eth0 gso off
-ethtool -K eth0 tso off
+  ethtool -K eth0 gso off
+  ethtool -K eth0 tso off
+}
 
-curl -so /tmp/openshift.sh https://raw.githubusercontent.com/openshift/openshift-extras/enterprise-2.1/enterprise/install-scripts/generic/openshift.sh
-chmod 0755 /tmp/openshift.sh
+set_tz() {
+  ln -sf /usr/share/zoneinfo/$1 /etc/localtime 
+}
 
-/tmp/openshift.sh
+register_channels() {
+  for CHANNEL in $*
+  do
+    curl -so /etc/yum.repos.d/$CHANNEL.repo http://$SATELLITE_IP_ADDR:8085/$CHANNEL.repo
+  done
+}
+
+install_packages() {
+  yum -y install $*
+}
+
+ose_install() {
+  curl -so /tmp/openshift.sh https://raw.githubusercontent.com/openshift/openshift-extras/enterprise-2.1/enterprise/install-scripts/generic/openshift.sh
+  chmod 0755 /tmp/openshift.sh
+
+  /tmp/openshift.sh
+}
+
+fix_gso
+set_tz Europe/London
+register_channels rhel-x86_64-server-6
+
+ose_install

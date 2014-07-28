@@ -139,5 +139,5 @@ resources:
       input_values: {}
 
 outputs:
-  root_ip:
+  ROOT_IP:
     value: { get_attr: [ root_floatingip, floating_ip_address ] }
