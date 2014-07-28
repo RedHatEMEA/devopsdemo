@@ -1,0 +1,4 @@
+parameters:
+  private_net: cec2b80c-030b-497b-945c-3b06d58de6f9
+  public_net: ad47709d-dcc3-4b9a-bfcb-03dd7c0cf371
+  key_name: jminter
