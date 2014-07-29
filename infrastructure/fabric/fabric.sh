@@ -6,6 +6,7 @@ FUSE_VERSION=${FUSE_VERSION:-jboss-fuse-6.1.0.redhat-379}
 
 LOCAL_IP_ADDR=$(ifconfig eth0 | sed -ne '/inet addr:/ { s/.*inet addr://; s/ .*//; p }')
 FLOATING_IP_ADDR=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+FUSE_USER=ec2-user
 
 fix_gso() {
   cat >>/etc/rc.local <<EOF
@@ -63,22 +64,32 @@ fuse_disable_indexer() {
   sed -i -e '/<feature>hawtio-maven-indexer<\/feature>/ d' /usr/local/$FUSE_VERSION/system/io/hawt/hawtio-karaf/1.2-redhat-379/hawtio-karaf-1.2-redhat-379-features.xml
 }
 
-fuse_start() {
-  export JAVA_HOME=/usr/lib/jvm/jre-1.7.0
+fuse_chown() {
+  chown -R $FUSE_USER:$FUSE_USER /usr/local/$FUSE_VERSION
+}
 
-  /usr/local/$FUSE_VERSION/bin/start
-  while ! /usr/local/$FUSE_VERSION/bin/client </dev/null &>/dev/null
-  do
-    sleep 5
-  done
+fuse_start() {
+  su - $FUSE_USER <<EOF
+export JAVA_HOME=/usr/lib/jvm/jre-1.7.0
+
+/usr/local/$FUSE_VERSION/bin/start
+while ! /usr/local/$FUSE_VERSION/bin/client </dev/null &>/dev/null
+do
+  sleep 5
+done
+EOF
 }
 
 fuse_create_fabric() {
-  /usr/local/$FUSE_VERSION/bin/client "fabric:create --wait-for-provisioning --resolver manualip --manual-ip $FLOATING_IP_ADDR --profile fabric"
+  su - $FUSE_USER <<EOF
+/usr/local/$FUSE_VERSION/bin/client "fabric:create --wait-for-provisioning --resolver manualip --manual-ip $FLOATING_IP_ADDR --profile fabric"
+EOF
 }
 
 fuse_join_fabric() {
-  /usr/local/$FUSE_VERSION/bin/client "fabric:join -f --zookeeper-password admin --resolver manualip --manual-ip $FLOATING_IP_ADDR $1"
+  su - $FUSE_USER <<EOF
+/usr/local/$FUSE_VERSION/bin/client "fabric:join -f --zookeeper-password admin --resolver manualip --manual-ip $FLOATING_IP_ADDR $1"
+EOF
 }
 
 fix_gso
@@ -94,6 +105,7 @@ fuse_create_admin_user admin admin
 fuse_set_container_name $CONF_NODE
 fuse_set_nexus
 fuse_disable_indexer
+fuse_chown
 fuse_start
 
 if [ $CONF_NODE = root ]
