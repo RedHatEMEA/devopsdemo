@@ -54,6 +54,13 @@
 			<artifactId>cxf-bundle</artifactId>
 			<version>2.7.12</version>
 		</dependency>
+		
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+            <version>4.11</version>
+        </dependency>
 	</dependencies>
 
 	<properties>
