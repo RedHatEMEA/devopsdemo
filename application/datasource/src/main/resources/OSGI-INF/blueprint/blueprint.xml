@@ -5,19 +5,15 @@
 	<cm:property-placeholder id="props"
 		persistent-id="database" />
 
-	<bean id="data_source_postgresql" class="org.postgresql.ds.PGPoolingDataSource"
-		destroy-method="close">
+	<bean id="data_source_postgresql" class="org.postgresql.xa.PGXADataSource">
 		<property name="serverName" value="${serverName}" />
 		<property name="databaseName" value="${databaseName}" />
 		<property name="portNumber" value="${portNumber}" />
 		<property name="user" value="${user}" />
 		<property name="password" value="${password}" />
-		<property name="dataSourceName" value="myConnectionPool" />
-		<property name="initialConnections" value="2" />
-		<property name="maxConnections" value="4" />
 	</bean>
 
-	<service ref="data_source_postgresql" interface="javax.sql.DataSource">
+	<service ref="data_source_postgresql" interface="javax.sql.XADataSource">
 		<service-properties>
 			<entry key="osgi.jndi.service.name" value="jdbc/postgresqlds" />
 		</service-properties>
