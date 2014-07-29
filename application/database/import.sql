@@ -3,24 +3,103 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
+SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET escape_string_warning = off;
+
+SET search_path = public, pg_catalog;
+
+ALTER TABLE ONLY public.ticket DROP CONSTRAINT fk_pdk8eed2puqot8lx8c90ledjn;
+ALTER TABLE ONLY public.ticketprice DROP CONSTRAINT fk_ntne1lqkfmtmke809budx5itq;
+ALTER TABLE ONLY public.booking DROP CONSTRAINT fk_leaf9xapkf0xcql0rj1ju6a3r;
+ALTER TABLE ONLY public.ticket DROP CONSTRAINT fk_jvudijc5qlti0547g3fuoctis;
+ALTER TABLE ONLY public.ticket DROP CONSTRAINT fk_fphjem4g2orlpfeabeuxkhycx;
+ALTER TABLE ONLY public.sectionallocation DROP CONSTRAINT fk_ds4sl29sqh0snk7hw733p3fx0;
+ALTER TABLE ONLY public.event DROP CONSTRAINT fk_cck2yno71efp1ghlfme4ophux;
+ALTER TABLE ONLY public.section DROP CONSTRAINT fk_bpuwo340e2jxwlwyf8qai3gql;
+ALTER TABLE ONLY public.ticketprice DROP CONSTRAINT fk_b4y5fuevgavs3drls31ni6wd3;
+ALTER TABLE ONLY public.show DROP CONSTRAINT fk_a9mnact8eh853y0kel611i2ak;
+ALTER TABLE ONLY public.ticketprice DROP CONSTRAINT fk_7o36hepy47tlyk1ta3ksix9fv;
+ALTER TABLE ONLY public.show DROP CONSTRAINT fk_7m3eentl362woisklouu1ub5a;
+ALTER TABLE ONLY public.event DROP CONSTRAINT fk_5nymmio04sew5y7o7wvtv82na;
+ALTER TABLE ONLY public.sectionallocation DROP CONSTRAINT fk_5dwueehoc18d429a6ma2e7t6;
+ALTER TABLE ONLY public.venue DROP CONSTRAINT fk_2c9wphvw1mi32yr614p4u7cuf;
+ALTER TABLE ONLY public.performance DROP CONSTRAINT fk_2ad0jk30a6hi0twn2xxso6g71;
+ALTER TABLE ONLY public.venue DROP CONSTRAINT venue_pkey;
+ALTER TABLE ONLY public.ticketprice DROP CONSTRAINT uk_rvx1s1nf4ihydinnk09u2udu5;
+ALTER TABLE ONLY public.section DROP CONSTRAINT uk_ruosqireipse41rdsuvhqj050;
+ALTER TABLE ONLY public.show DROP CONSTRAINT uk_pn5wxc4yrspdflf414rp2337c;
+ALTER TABLE ONLY public.eventcategory DROP CONSTRAINT uk_pcd6hbptlq9jx8t5l135k2mev;
+ALTER TABLE ONLY public.performance DROP CONSTRAINT uk_o9uuea91geqwv8cnwi1uq625w;
+ALTER TABLE ONLY public.venue DROP CONSTRAINT uk_k049njfy1fdk2svm5m54ulorx;
+ALTER TABLE ONLY public.event DROP CONSTRAINT uk_ij7n685n8qbung3jvhw3rifm7;
+ALTER TABLE ONLY public.mediaitem DROP CONSTRAINT uk_4hr5wsvx6wqc3x7f62hi4icwk;
+ALTER TABLE ONLY public.ticketcategory DROP CONSTRAINT uk_43455ipnchbn6r4bg8pviai3g;
+ALTER TABLE ONLY public.sectionallocation DROP CONSTRAINT uk_25wlm457x8dmc00we5uw7an3s;
+ALTER TABLE ONLY public.ticketprice DROP CONSTRAINT ticketprice_pkey;
+ALTER TABLE ONLY public.ticketcategory DROP CONSTRAINT ticketcategory_pkey;
+ALTER TABLE ONLY public.ticket DROP CONSTRAINT ticket_pkey;
+ALTER TABLE ONLY public.show DROP CONSTRAINT show_pkey;
+ALTER TABLE ONLY public.sectionallocation DROP CONSTRAINT sectionallocation_pkey;
+ALTER TABLE ONLY public.section DROP CONSTRAINT section_pkey;
+ALTER TABLE ONLY public.performance DROP CONSTRAINT performance_pkey;
+ALTER TABLE ONLY public.mediaitem DROP CONSTRAINT mediaitem_pkey;
+ALTER TABLE ONLY public.eventcategory DROP CONSTRAINT eventcategory_pkey;
+ALTER TABLE ONLY public.event DROP CONSTRAINT event_pkey;
+ALTER TABLE ONLY public.booking DROP CONSTRAINT booking_pkey;
+ALTER TABLE public.venue ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.ticketprice ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.ticketcategory ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.ticket ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.show ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.sectionallocation ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.section ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.performance ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.mediaitem ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.eventcategory ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.event ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE public.booking ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE public.venue_id_seq;
+DROP TABLE public.venue;
+DROP SEQUENCE public.ticketprice_id_seq;
+DROP TABLE public.ticketprice;
+DROP SEQUENCE public.ticketcategory_id_seq;
+DROP TABLE public.ticketcategory;
+DROP SEQUENCE public.ticket_id_seq;
+DROP TABLE public.ticket;
+DROP SEQUENCE public.show_id_seq;
+DROP TABLE public.show;
+DROP SEQUENCE public.sectionallocation_id_seq;
+DROP TABLE public.sectionallocation;
+DROP SEQUENCE public.section_id_seq;
+DROP TABLE public.section;
+DROP SEQUENCE public.performance_id_seq;
+DROP TABLE public.performance;
+DROP SEQUENCE public.mediaitem_id_seq;
+DROP TABLE public.mediaitem;
+DROP SEQUENCE public.eventcategory_id_seq;
+DROP TABLE public.eventcategory;
+DROP SEQUENCE public.event_id_seq;
+DROP TABLE public.event;
+DROP SEQUENCE public.booking_id_seq;
+DROP TABLE public.booking;
+DROP SCHEMA public;
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO postgres;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
 --
 
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+COMMENT ON SCHEMA public IS 'standard public schema';
 
 
 SET search_path = public, pg_catalog;
@@ -51,8 +130,8 @@ ALTER TABLE public.booking OWNER TO admin;
 CREATE SEQUENCE booking_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -63,6 +142,13 @@ ALTER TABLE public.booking_id_seq OWNER TO admin;
 --
 
 ALTER SEQUENCE booking_id_seq OWNED BY booking.id;
+
+
+--
+-- Name: booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('booking_id_seq', 1, false);
 
 
 --
@@ -87,8 +173,8 @@ ALTER TABLE public.event OWNER TO admin;
 CREATE SEQUENCE event_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -99,6 +185,13 @@ ALTER TABLE public.event_id_seq OWNER TO admin;
 --
 
 ALTER SEQUENCE event_id_seq OWNED BY event.id;
+
+
+--
+-- Name: event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('event_id_seq', 19, true);
 
 
 --
@@ -120,8 +213,8 @@ ALTER TABLE public.eventcategory OWNER TO admin;
 CREATE SEQUENCE eventcategory_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -135,18 +228,11 @@ ALTER SEQUENCE eventcategory_id_seq OWNED BY eventcategory.id;
 
 
 --
--- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: admin
+-- Name: eventcategory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-CREATE SEQUENCE hibernate_sequence
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+SELECT pg_catalog.setval('eventcategory_id_seq', 5, true);
 
-
-ALTER TABLE public.hibernate_sequence OWNER TO admin;
 
 --
 -- Name: mediaitem; Type: TABLE; Schema: public; Owner: admin; Tablespace: 
@@ -168,8 +254,8 @@ ALTER TABLE public.mediaitem OWNER TO admin;
 CREATE SEQUENCE mediaitem_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -180,6 +266,13 @@ ALTER TABLE public.mediaitem_id_seq OWNER TO admin;
 --
 
 ALTER SEQUENCE mediaitem_id_seq OWNED BY mediaitem.id;
+
+
+--
+-- Name: mediaitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('mediaitem_id_seq', 24, true);
 
 
 --
@@ -202,8 +295,8 @@ ALTER TABLE public.performance OWNER TO admin;
 CREATE SEQUENCE performance_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -214,6 +307,13 @@ ALTER TABLE public.performance_id_seq OWNER TO admin;
 --
 
 ALTER SEQUENCE performance_id_seq OWNED BY performance.id;
+
+
+--
+-- Name: performance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('performance_id_seq', 11, true);
 
 
 --
@@ -239,8 +339,8 @@ ALTER TABLE public.section OWNER TO admin;
 CREATE SEQUENCE section_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -251,6 +351,13 @@ ALTER TABLE public.section_id_seq OWNER TO admin;
 --
 
 ALTER SEQUENCE section_id_seq OWNED BY section.id;
+
+
+--
+-- Name: section_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('section_id_seq', 23, true);
 
 
 --
@@ -276,8 +383,8 @@ ALTER TABLE public.sectionallocation OWNER TO admin;
 CREATE SEQUENCE sectionallocation_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -288,6 +395,13 @@ ALTER TABLE public.sectionallocation_id_seq OWNER TO admin;
 --
 
 ALTER SEQUENCE sectionallocation_id_seq OWNED BY sectionallocation.id;
+
+
+--
+-- Name: sectionallocation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('sectionallocation_id_seq', 56, true);
 
 
 --
@@ -310,8 +424,8 @@ ALTER TABLE public.show OWNER TO admin;
 CREATE SEQUENCE show_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -322,6 +436,13 @@ ALTER TABLE public.show_id_seq OWNER TO admin;
 --
 
 ALTER SEQUENCE show_id_seq OWNED BY show.id;
+
+
+--
+-- Name: show_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('show_id_seq', 6, true);
 
 
 --
@@ -348,8 +469,8 @@ ALTER TABLE public.ticket OWNER TO admin;
 CREATE SEQUENCE ticket_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -360,6 +481,13 @@ ALTER TABLE public.ticket_id_seq OWNER TO admin;
 --
 
 ALTER SEQUENCE ticket_id_seq OWNED BY ticket.id;
+
+
+--
+-- Name: ticket_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('ticket_id_seq', 1, false);
 
 
 --
@@ -381,8 +509,8 @@ ALTER TABLE public.ticketcategory OWNER TO admin;
 CREATE SEQUENCE ticketcategory_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -393,6 +521,13 @@ ALTER TABLE public.ticketcategory_id_seq OWNER TO admin;
 --
 
 ALTER SEQUENCE ticketcategory_id_seq OWNED BY ticketcategory.id;
+
+
+--
+-- Name: ticketcategory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('ticketcategory_id_seq', 2, true);
 
 
 --
@@ -417,8 +552,8 @@ ALTER TABLE public.ticketprice OWNER TO admin;
 CREATE SEQUENCE ticketprice_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -432,17 +567,11 @@ ALTER SEQUENCE ticketprice_id_seq OWNED BY ticketprice.id;
 
 
 --
--- Name: userentity; Type: TABLE; Schema: public; Owner: admin; Tablespace: 
+-- Name: ticketprice_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-CREATE TABLE userentity (
-    id bigint NOT NULL,
-    name character varying(255),
-    version bigint
-);
+SELECT pg_catalog.setval('ticketprice_id_seq', 37, true);
 
-
-ALTER TABLE public.userentity OWNER TO admin;
 
 --
 -- Name: venue; Type: TABLE; Schema: public; Owner: admin; Tablespace: 
@@ -469,8 +598,8 @@ ALTER TABLE public.venue OWNER TO admin;
 CREATE SEQUENCE venue_id_seq
     START WITH 1
     INCREMENT BY 1
-    NO MINVALUE
     NO MAXVALUE
+    NO MINVALUE
     CACHE 1;
 
 
@@ -481,6 +610,13 @@ ALTER TABLE public.venue_id_seq OWNER TO admin;
 --
 
 ALTER SEQUENCE venue_id_seq OWNED BY venue.id;
+
+
+--
+-- Name: venue_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('venue_id_seq', 5, true);
 
 
 --
@@ -576,13 +712,6 @@ COPY booking (id, cancellationcode, contactemail, createdon, performance_id) FRO
 
 
 --
--- Name: booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('booking_id_seq', 1, false);
-
-
---
 -- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
@@ -610,13 +739,6 @@ COPY event (id, description, name, category_id, mediaitem_id) FROM stdin;
 
 
 --
--- Name: event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('event_id_seq', 19, true);
-
-
---
 -- Data for Name: eventcategory; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
@@ -627,20 +749,6 @@ COPY eventcategory (id, description) FROM stdin;
 4	Sporting
 5	Comedy
 \.
-
-
---
--- Name: eventcategory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('eventcategory_id_seq', 5, true);
-
-
---
--- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('hibernate_sequence', 1, false);
 
 
 --
@@ -670,16 +778,9 @@ COPY mediaitem (id, mediatype, url) FROM stdin;
 20	IMAGE	https://dl.dropbox.com/u/8625587/ticketmonster/SlapShot.png
 21	IMAGE	https://dl.dropbox.com/u/8625587/ticketmonster/Giantsofthegame.png
 22	IMAGE	https://dl.dropbox.com/u/8625587/ticketmonster/Punch%26Judy.png
-23	IMAGE	http://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Paris_Opera_full_frontal_architecture%2C_May_2009.jpg/800px-Paris_Opera_full_frontal_architecture%2C_May_2009.jpg
-24	IMAGE	http://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Boston_Symphony_Hall_from_the_south.jpg/800px-Boston_Symphony_Hall_from_the_south.jpg
+23	IMAGE	https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Paris_Opera_full_frontal_architecture%2C_May_2009.jpg/800px-Paris_Opera_full_frontal_architecture%2C_May_2009.jpg
+24	IMAGE	https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Boston_Symphony_Hall_from_the_south.jpg/800px-Boston_Symphony_Hall_from_the_south.jpg
 \.
-
-
---
--- Name: mediaitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('mediaitem_id_seq', 24, true);
 
 
 --
@@ -687,25 +788,18 @@ SELECT pg_catalog.setval('mediaitem_id_seq', 24, true);
 --
 
 COPY performance (id, date, show_id) FROM stdin;
-1	2014-05-29 19:00:00	1
-2	2014-05-30 19:00:00	1
-3	2014-05-31 19:30:00	2
-4	2014-06-01 19:30:00	2
-5	2014-06-02 17:00:00	3
-6	2014-06-02 19:30:00	3
-7	2014-06-04 17:00:00	4
-8	2014-06-04 19:30:00	4
-9	2014-07-09 21:00:00	5
-10	2014-05-29 19:00:00	6
-11	2014-05-30 19:00:00	6
+1	2014-09-26 19:00:00	1
+2	2014-09-27 19:00:00	1
+3	2014-09-28 19:30:00	2
+4	2014-09-29 19:30:00	2
+5	2014-09-30 17:00:00	3
+6	2014-09-30 19:30:00	3
+7	2014-10-02 17:00:00	4
+8	2014-10-02 19:30:00	4
+9	2014-11-06 21:00:00	5
+10	2014-09-26 19:00:00	6
+11	2014-09-27 19:00:00	6
 \.
-
-
---
--- Name: performance_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('performance_id_seq', 11, true);
 
 
 --
@@ -737,13 +831,6 @@ COPY section (id, description, name, numberofrows, rowcapacity, venue_id) FROM s
 22	Right	C	10	41	5
 23	Balcony	D	6	92	5
 \.
-
-
---
--- Name: section_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('section_id_seq', 23, true);
 
 
 --
@@ -811,13 +898,6 @@ COPY sectionallocation (id, allocated, occupiedcount, version, performance_id, s
 
 
 --
--- Name: sectionallocation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('sectionallocation_id_seq', 56, true);
-
-
---
 -- Data for Name: show; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
@@ -832,25 +912,11 @@ COPY show (id, event_id, venue_id) FROM stdin;
 
 
 --
--- Name: show_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('show_id_seq', 6, true);
-
-
---
 -- Data for Name: ticket; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
 COPY ticket (id, price, number, rownumber, section_id, ticketcategory_id, tickets_id) FROM stdin;
 \.
-
-
---
--- Name: ticket_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('ticket_id_seq', 1, false);
 
 
 --
@@ -861,13 +927,6 @@ COPY ticketcategory (id, description) FROM stdin;
 1	Adult
 2	Child 0-14yrs
 \.
-
-
---
--- Name: ticketcategory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('ticketcategory_id_seq', 2, true);
 
 
 --
@@ -916,21 +975,6 @@ COPY ticketprice (id, price, section_id, show_id, ticketcategory_id) FROM stdin;
 
 
 --
--- Name: ticketprice_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('ticketprice_id_seq', 37, true);
-
-
---
--- Data for Name: userentity; Type: TABLE DATA; Schema: public; Owner: admin
---
-
-COPY userentity (id, name, version) FROM stdin;
-\.
-
-
---
 -- Data for Name: venue; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
@@ -941,13 +985,6 @@ COPY venue (id, city, country, street, capacity, description, name, mediaitem_id
 4	Paris	France	8 Rue Scribe	1972	The Palais Garnier is a 1,979-seat opera house, which was built from 1861 to 1875 for the Paris Opera.	Opera Garnier	23
 5	Boston	USA	301 Massachusetts Avenue	1972	Designed by McKim, Mead and White, it was built in 1900 for the Boston Symphony Orchestra, which continues to make the hall its home. The hall was designated a U.S. National Historic Landmark in 1999.	Boston Symphony Hall	24
 \.
-
-
---
--- Name: venue_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('venue_id_seq', 5, true);
 
 
 --
@@ -1116,14 +1153,6 @@ ALTER TABLE ONLY section
 
 ALTER TABLE ONLY ticketprice
     ADD CONSTRAINT uk_rvx1s1nf4ihydinnk09u2udu5 UNIQUE (section_id, show_id, ticketcategory_id);
-
-
---
--- Name: userentity_pkey; Type: CONSTRAINT; Schema: public; Owner: admin; Tablespace: 
---
-
-ALTER TABLE ONLY userentity
-    ADD CONSTRAINT userentity_pkey PRIMARY KEY (id);
 
 
 --

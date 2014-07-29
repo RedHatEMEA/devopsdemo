@@ -55,4 +55,4 @@ if __name__ == "__main__":
 
     api.application_deploy(id, artifact_url = artifact_url)
 
-    print "https://%s-demo.ose.saleslab.fab.redhat.com" % name
+    print "http://%s-demo.ose.saleslab.fab.redhat.com" % name

@@ -23,6 +23,12 @@ deploy_app_instances() {
   eval $(utils/wait-stack.py $PREFIX-fabric)
 }
 
+deploy_app_database() {
+  CONNSTRING="$DATABASE_IP:5432:ticketmonster:admin:password"
+  grep -q $CONNSTRING ~/.pgpass || echo $CONNSTRING >>~/.pgpass 
+  psql -h $DATABASE_IP -U admin ticketmonster <../application/database/import.sql
+}
+
 deploy_app_fabric() {
   TMPDIR=$(mktemp -d)
 
@@ -61,5 +67,6 @@ deploy_app_openshift() {
 get_dns_ip
 get_openshift_ip
 deploy_app_instances
+deploy_app_database
 deploy_app_fabric
 deploy_app_openshift
