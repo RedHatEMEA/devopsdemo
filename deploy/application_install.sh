@@ -26,7 +26,8 @@ deploy_app_instances() {
 deploy_app_database() {
   CONNSTRING="$DATABASE_IP:5432:ticketmonster:admin:password"
   grep -q $CONNSTRING ~/.pgpass || echo $CONNSTRING >>~/.pgpass 
-  psql -h $DATABASE_IP -U admin ticketmonster <../application/database/import.sql
+  ping -c 2 $DATABASE_IP &>/dev/null || true
+  psql -h $DATABASE_IP -U admin ticketmonster <../application/database/import.sql &>/dev/null
 }
 
 deploy_app_fabric() {
@@ -35,6 +36,9 @@ deploy_app_fabric() {
   pushd $TMPDIR
   ping -c 2 $ROOT_IP &>/dev/null || true
   git clone -b 1.0 http://admin:admin@$ROOT_IP:8181/git/fabric
+  cd fabric
+  git branch $VERSION
+  git checkout $VERSION
   popd
 
   mkdir $TMPDIR/fabric/fabric/profiles/ticketmonster.profile
@@ -52,16 +56,16 @@ EOF
   cd fabric
   git add -A
   git commit -am ticketmonster
-  git push
+  git push --set-upstream origin $VERSION
   popd
 
   rm -rf $TMPDIR
 
-  eval $(utils/deploy-fabric.py http://$ROOT_IP:8181/jolokia ticketmonster $PREFIX-monster)
+  eval $(utils/deploy-fabric.py http://$ROOT_IP:8181/jolokia ticketmonster $PREFIX-monster $VERSION)
 }
 
 deploy_app_openshift() {
-  utils/deploy-openshift.py https://$BROKER_IP/broker/rest ${PREFIX}monster $CONTAINER_URL/cxf/ "http://10.33.11.12:8081/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/0.1-$VERSION/webapp-0.1-$VERSION.tar.gz"
+  utils/deploy-openshift.py create https://$BROKER_IP/broker/rest ${PREFIX}monster $CONTAINER_URL/cxf/ "http://10.33.11.12:8081/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/0.1-$VERSION/webapp-0.1-$VERSION.tar.gz"
 }
 
 get_dns_ip
