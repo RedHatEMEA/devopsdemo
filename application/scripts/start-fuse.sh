@@ -43,7 +43,7 @@ function startFuse()
         $FUSE_HOME/bin/client -u admin -p admin -r 60 "fabric:create --new-user admin --new-user-password admin --wait-for-provisioning"
         $FUSE_HOME/bin/client -u admin -p admin -r 60 "shell:source $FEATURES_PROJECT/karaf/deploy"
         . $CURRENT_DIR/update-fabric-git.sh
-        $FUSE_HOME/bin/client -u admin -p admin -r 60 "container-create-child --profile ticketmonster-backend root ticketmonster-container"
+        $FUSE_HOME/bin/client -u admin -p admin -r 60 "container-create-child --profile ticketmonster root ticketmonster-container"
     fi
 }
 

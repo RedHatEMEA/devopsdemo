@@ -10,3 +10,6 @@ pushd git-repo/fabric
 git add .
 git commit -am "Added new properties"
 git push origin 1.0
+popd
+rm -fr git-repo
+
