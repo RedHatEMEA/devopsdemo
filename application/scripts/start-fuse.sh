@@ -19,7 +19,7 @@ function startFuse()
     ($FUSE_HOME/bin/start $1)
 
     i=0.0
-    c=0
+    c=0cd
     sleeptime=1
 
     echo -n "Waiting for Fuse to become available..."
@@ -31,14 +31,7 @@ function startFuse()
         c=$($FUSE_HOME/bin/client -u admin -p admin help 2> /dev/null| grep fabric:create | wc -l)
     done
 
-
-
-FEATURES_PROJECT
-
-
     set -x
-
-
 
     if [ ${1} == "debug" ]
     then
@@ -50,22 +43,10 @@ FEATURES_PROJECT
         $FUSE_HOME/bin/client -u admin -p admin -r 60 "fabric:create --new-user admin --new-user-password admin --wait-for-provisioning"
         $FUSE_HOME/bin/client -u admin -p admin -r 60 "shell:source $FEATURES_PROJECT/karaf/deploy"
         . $CURRENT_DIR/update-fabric-git.sh
-        $FUSE_HOME/bin/client -u admin -p admin -r 60 "$CONTAINER_CREATE_CHILD_SCRIPT"
-
+        $FUSE_HOME/bin/client -u admin -p admin -r 60 "container-create-child --profile ticketmonster-backend root ticketmonster-container"
     fi
 }
 
 
 
-
-#
-# main
-#
-options $@
-if [ $? -ne 0 ]
-then
-   echo "USAGE: some flags may have errors"
-   exit 1
-fi
-
-
+startFuse
