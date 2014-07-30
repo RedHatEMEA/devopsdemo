@@ -6,21 +6,13 @@ import sys
 import time
 
 endpoint = sys.argv[1] # http://localhost:8181/jolokia
-profile = sys.argv[2] # ticketmonster
-name = sys.argv[3] # monster
-version = sys.argv[4]
+name = sys.argv[2] # monster
+version = sys.argv[3]
 
 payload = {
-    "operation": "createContainers(java.util.Map)",
+    "operation": "applyVersionToContainers(java.lang.String, java.util.List)",
     "type": "exec",
-    "arguments": [{
-	    "name": name,
-	    "parent": "root",
-	    "providerType": "child",
-	    "profiles": [ profile ],
-	    "version": version,
-	    "jmxUser": "admin",
-	    "jmxPassword": "admin"}],
+    "arguments": [ version, [ name ] ],
     "mbean": "io.fabric8:type=Fabric"
 }
 
