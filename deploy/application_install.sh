@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
 PREFIX=${PREFIX:-$(utils/rnd.py)}
-VERSION=${VERSION:-8}
+VERSION=${VERSION:-11}
 
 if [ -z $OS_AUTH_URL ]; then
   echo "error: must set OpenStack credentials"
@@ -18,12 +18,11 @@ get_openshift_ip() {
 
 deploy_app_instances() {
   heat stack-create $PREFIX-database -e ../infrastructure/environment.yaml -f ../infrastructure/database/template.yaml -P dns_nameservers=$DNS_IP || true
-  heat stack-create $PREFIX-fabric -e ../infrastructure/environment.yaml -f ../infrastructure/fabric-lite/template.yaml -P dns_nameservers=$DNS_IP || true
-  eval $(utils/wait-stack.py $PREFIX-database)
-  eval $(utils/wait-stack.py $PREFIX-fabric)
+  heat stack-create $PREFIX-fabric -e ../infrastructure/environment.yaml -f ../infrastructure/fabric/template.yaml -P dns_nameservers=$DNS_IP || true
 }
 
 deploy_app_database() {
+  eval $(utils/wait-stack.py $PREFIX-database)
   CONNSTRING="$DATABASE_IP:5432:ticketmonster:admin:password"
   grep -q $CONNSTRING ~/.pgpass || echo $CONNSTRING >>~/.pgpass 
   ping -c 2 $DATABASE_IP &>/dev/null || true
@@ -31,6 +30,7 @@ deploy_app_database() {
 }
 
 deploy_app_fabric() {
+  eval $(utils/wait-stack.py $PREFIX-fabric)
   TMPDIR=$(mktemp -d)
 
   pushd $TMPDIR

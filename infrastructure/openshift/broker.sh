@@ -55,6 +55,15 @@ ose_install() {
   /tmp/openshift.sh
 }
 
+enable_admin_console() {
+  sed -i -e '/ProxyPassReverse \/console/ a\
+  ProxyPass /admin-console http://127.0.0.1:8080/admin-console' /etc/httpd/conf.d/000002_openshift_origin_broker_proxy.conf
+  sed -i -e '/ProxyPassReverse \/console/ a\
+  ProxyPass /assets http://127.0.0.1:8080/assets' /etc/httpd/conf.d/000002_openshift_origin_broker_proxy.conf
+
+  service httpd reload
+}
+
 fix_gso
 set_tz Europe/London
 register_channels rhel-x86_64-server-6 rhel-x86_64-server-6-rhscl-1 rhel-x86_64-server-6-ose-2.1-infrastructure rhel-x86_64-server-6-ose-2.1-rhc
@@ -63,3 +72,4 @@ install_packages bind-utils
 ose_register_dns broker.$CONF_DOMAIN A $CONF_BROKER_IP_ADDR
 ose_register_dns activemq.$CONF_DOMAIN A $CONF_BROKER_IP_ADDR
 ose_install
+enable_admin_console

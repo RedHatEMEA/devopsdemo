@@ -66,7 +66,7 @@ resources:
       config: { get_file: broker2.sh }
 
   broker_softwaredeployment2:
-    depends_on: node1_softwaredeployment1
+    depends_on: [ node1_softwaredeployment1, node2_softwaredeployment1 ]
     type: OS::Heat::SoftwareDeployment
     properties:
       config: { get_resource: broker_softwareconfig2 }
@@ -105,6 +105,41 @@ resources:
     properties:
       config: { get_resource: node1_softwareconfig1 }
       server: { get_resource: node1_server }
+      input_values:
+        CONF_BROKER_IP_ADDR: { get_attr: [ broker_floatingip, floating_ip_address ] }
+
+  node2_server:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: image }
+      flavor: m1.medium
+      key_name: { get_param: key_name }
+      networks:
+        - port: { get_resource: node2_port }
+      user_data_format: SOFTWARE_CONFIG
+
+  node2_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_attr: [ net_openshift, id ] }
+
+  node2_floatingip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: { get_param: public_net } 
+      port_id: { get_resource: node2_port }
+
+  node2_softwareconfig1:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: script
+      config: { get_file: node.sh }
+
+  node2_softwaredeployment1:
+    type: OS::Heat::SoftwareDeployment
+    properties:
+      config: { get_resource: node2_softwareconfig1 }
+      server: { get_resource: node2_server }
       input_values:
         CONF_BROKER_IP_ADDR: { get_attr: [ broker_floatingip, floating_ip_address ] }
 
