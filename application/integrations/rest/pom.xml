@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<project
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>bundle-parent</artifactId>
+        <groupId>com.redhat.ticketmonster</groupId>
+        <version>0.1-SNAPSHOT</version>
+        <relativePath>../bundle-parent</relativePath>
+    </parent>
+
+    <artifactId>rest</artifactId>
+    <packaging>bundle</packaging>
+
+
+    <properties>
+        <osgi.import.pkg>*</osgi.import.pkg>
+        <osgi.export.pkg></osgi.export.pkg>
+        <osgi.private.pkg>org.jboss.jdf.example.ticketmonster.rest,
+            org.jboss.jdf.example.ticketmonster.rest.dto,
+            org.jboss.jdf.example.ticketmonster.model,
+            org.jboss.jdf.example.ticketmonster.service,
+            org.jboss.jdf.example.ticketmonster.util,
+            org.jboss.jdf.example.ticketmonster.util.qualifier, uk.minter.rest
+        </osgi.private.pkg>
+        <osgi.meta.persistence>META-INF/persistence.xml</osgi.meta.persistence>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-ejb_3.1_spec</artifactId>
+            <version>1.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jpa_2.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-api</artifactId>
+        </dependency>
+
+    </dependencies>
+
+
+</project>

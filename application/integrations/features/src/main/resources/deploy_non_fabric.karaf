@@ -1,0 +1,2 @@
+features:addurl mvn:com.redhat.ticketmonster/ticketmonster-features/${project.version}/xml/features
+features:install ticketmonster-services
