@@ -54,7 +54,7 @@
         <jax.jee.version>1.1.1</jax.jee.version>
         <jpa2.version>1.1</jpa2.version>
         <osgi.version>5.0.0</osgi.version>
-        <hibernator.validator>4.3.1.Final</hibernator.validator>
+        <hibernator.validator>5.0.1.Final</hibernator.validator>
         <hibernator.entitymanager.version>4.2.7.Final</hibernator.entitymanager.version>
         <javax.cdi.version>1.2</javax.cdi.version>
         <geronimo.ejb.version>1.0.1</geronimo.ejb.version>
@@ -334,11 +334,13 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
                 <version>${slf4j.version}</version>
+                <scope>test</scope>
             </dependency>
 
           
