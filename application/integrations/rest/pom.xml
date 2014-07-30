@@ -23,7 +23,7 @@
             org.jboss.jdf.example.ticketmonster.model,
             org.jboss.jdf.example.ticketmonster.service,
             org.jboss.jdf.example.ticketmonster.util,
-            org.jboss.jdf.example.ticketmonster.util.qualifier, uk.minter.rest
+            org.jboss.jdf.example.ticketmonster.util.qualifier, com.redhat.ticketmonster
         </osgi.private.pkg>
         <osgi.meta.persistence>META-INF/persistence.xml</osgi.meta.persistence>
     </properties>
@@ -74,7 +74,12 @@
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-api</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-all</artifactId>
+            <version>5.9.0</version>
+        </dependency>
+        
     </dependencies>
 
 

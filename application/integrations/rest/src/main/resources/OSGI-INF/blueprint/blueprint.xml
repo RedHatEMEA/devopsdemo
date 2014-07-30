@@ -90,7 +90,7 @@
 
 	</bean>
 
-	<bean id="headerInterceptor" class="uk.minter.rest.HeaderInterceptor"
+	<bean id="headerInterceptor" class="com.redhat.ticketmonster.HeaderInterceptor"
 		activation="eager" />
 
 </blueprint>

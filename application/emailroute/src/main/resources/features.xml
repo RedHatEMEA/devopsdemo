@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="quickstart-jms-6.1.0.redhat-379" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
+
+	<repository>mvn:org.apache.camel.karaf/apache-camel/2.12.0.redhat-610379/xml/features</repository>
+	<repository>mvn:org.apache.activemq/activemq-karaf/5.9.0.redhat-610379/xml/features</repository>
+	<repository>mvn:io.fabric8/fabric8-karaf/1.0.0.redhat-379/xml/features</repository>
+
+	<feature name="quickstart-jms" version="6.1.0.redhat-379" resolver="(obr)">
+		<feature version="[2.12,3)">camel-jms</feature>
+		<feature version="[2.12,3)">camel</feature>
+		<feature version="[2.12,3)">camel-mail</feature>
+		<feature version="5.9.0.redhat-610379">activemq-camel</feature>
+		<feature version="6.1.0.redhat-379">mq-fabric</feature>
+
+		<bundle>mvn:org.jboss.amq/mq-fabric-camel/6.1.0.redhat-379</bundle>
+		<bundle>mvn:org.jboss.amq/mq-fabric/6.1.0.redhat-379</bundle>
+		<bundle>mvn:io.fabric8/common-util/1.0.0.redhat-379</bundle>
+		<bundle>mvn:org.jboss.quickstarts.fuse/jms/6.1.0.redhat-379</bundle>
+	</feature>
+
+</features>

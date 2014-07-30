@@ -1,4 +1,4 @@
-package uk.minter.rest;
+package com.redhat.ticketmonster;
 
 import java.util.Arrays;
 import java.util.List;

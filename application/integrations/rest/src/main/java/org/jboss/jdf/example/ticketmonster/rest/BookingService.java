@@ -31,6 +31,8 @@ import org.jboss.jdf.example.ticketmonster.service.AllocatedSeats;
 import org.jboss.jdf.example.ticketmonster.service.SeatAllocationService;
 import org.jboss.jdf.example.ticketmonster.util.MultivaluedHashMap;
 
+import com.redhat.ticketmonster.BookingNotifier;
+
 /**
  * <p>
  *     A JAX-RS endpoint for handling {@link Booking}s. Inherits the GET
@@ -191,6 +193,7 @@ public class BookingService extends BaseEntityService<Booking> {
                 booking.setPerformance(performance);
                 booking.setCancellationCode("abc");
                 getEntityManager().persist(booking);
+                BookingNotifier.notify(booking);
                 return Response.ok().entity(booking).type(MediaType.APPLICATION_JSON_TYPE).build();
             } else {
                 Map<String, Object> responseEntity = new HashMap<String, Object>();

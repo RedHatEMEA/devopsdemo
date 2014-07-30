@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+             http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+             http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+	<camelContext xmlns="http://camel.apache.org/schema/blueprint"
+		xmlns:order="http://fusesource.com/examples/order/v7" id="jms-example-context">
+
+		<route id="sendmail-route">
+			<from uri="amq:bookings" />
+			<setHeader headerName="to">
+				<xpath>/customer/email/text()</xpath>
+			</setHeader>
+			<setHeader headerName="from">
+				<constant>ticketmonster@redhat.com</constant>
+			</setHeader>
+			<setHeader headerName="subject">
+				<constant>Thank-you for your booking</constant>
+			</setHeader>
+			<setBody>
+				<xpath>/customer/message/text()</xpath>
+			</setBody>
+			<to uri="smtp://int-mx.corp.redhat.com" />
+		</route>
+
+	</camelContext>
+
+</blueprint>
