@@ -35,6 +35,9 @@ databaseName = ticketmonster
 user = admin
 password = password
 EOF
+  cat >$TMPDIR/fabric/fabric/profiles/ticketmonster/emailroute.profile/email.properties <<EOF
+smtp.email.server = 10.33.11.11
+EOF
 
   pushd $TMPDIR
   cd fabric
