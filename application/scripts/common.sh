@@ -11,6 +11,9 @@ if [ -z "$FUSE_HOME" ]; then
     fi
 fi
 
+
+export FEATURES_PROJECT=$(cat features.properties)
+
 # Setup the main deploy script
 if [ -z "$FUSE_HOME" ]; then
     if [ -e fuse.home.properties ]; then

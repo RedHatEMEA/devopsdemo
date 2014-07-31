@@ -21,7 +21,7 @@
 			<setBody>
 				<xpath>/customer/message/text()</xpath>
 			</setBody>
-			<to uri="smtp://int-mx.corp.redhat.com" />
+			<to uri="smtp://{{smtp.email.server}}" />
 		</route>
 
 	</camelContext>
