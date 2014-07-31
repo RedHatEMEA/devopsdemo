@@ -59,5 +59,5 @@ upgrade_openshift() {
 
 get_ips
 prepare_fabric
-upgrade_fabric
-upgrade_openshift
+#upgrade_fabric
+#upgrade_openshift
