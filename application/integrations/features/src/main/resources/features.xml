@@ -24,5 +24,17 @@
         <bundle dependency='true'>mvn:org.hibernate/hibernate-validator/5.0.1.Final</bundle>
     </feature>
 
+    <feature name="ticketmonster-emailroute">
+      <feature version="[2.12,3)">camel-jms</feature>
+      <feature version="[2.12,3)">camel</feature>
+      <feature version="[2.12,3)">camel-mail</feature>
+      <feature version="5.9.0.redhat-610379">activemq-camel</feature>
+      <feature version="6.1.0.redhat-379">mq-fabric</feature>
+
+      <bundle>mvn:org.jboss.amq/mq-fabric-camel/6.1.0.redhat-379</bundle>
+      <bundle>mvn:org.jboss.amq/mq-fabric/6.1.0.redhat-379</bundle>
+      <bundle>mvn:io.fabric8/common-util/1.0.0.redhat-379</bundle>
+      <bundle>mvn:com.redhat.ticketmonster/emailroute/${project.version}</bundle>
+    </feature>
 </features>
 

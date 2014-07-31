@@ -41,10 +41,12 @@ deploy_app_fabric() {
   git checkout $VERSION
   popd
 
-  mkdir $TMPDIR/fabric/fabric/profiles/ticketmonster.profile
-  cp -a ../application/ticketmonster.profile/io.fabric8.agent.properties $TMPDIR/fabric/fabric/profiles/ticketmonster.profile
-  sed -i -e "s/SNAPSHOT/$VERSION/g" $TMPDIR/fabric/fabric/profiles/ticketmonster.profile/io.fabric8.agent.properties
-  cat >$TMPDIR/fabric/fabric/profiles/ticketmonster.profile/database.properties <<EOF
+  cp -a ../application/profiles/* $TMPDIR/fabric/fabric/profiles
+  for FILE in $TMPDIR/fabric/fabric/profiles/ticketmonster/*/io.fabric8.agent.properties
+  do
+    sed -i -e "s/SNAPSHOT/$VERSION/g" $FILE
+  done
+  cat >$TMPDIR/fabric/fabric/profiles/ticketmonster/rest.profile/database.properties <<EOF
 serverName = $DATABASE_IP
 portNumber = 5432
 databaseName = ticketmonster
@@ -61,7 +63,7 @@ EOF
 
   rm -rf $TMPDIR
 
-  eval $(utils/deploy-fabric.py http://$ROOT_IP:8181/jolokia ticketmonster $PREFIX-monster $VERSION)
+  eval $(utils/deploy-fabric.py http://$ROOT_IP:8181/jolokia ticketmonster-rest $PREFIX-monster $VERSION)
 }
 
 deploy_app_openshift() {

@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
   
     <artifactId>integrations</artifactId>
-    <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Ticketmonster :: Integrations</name>
@@ -20,6 +19,7 @@
         <module>features</module>
         <module>datasource</module>
         <module>rest</module>
+        <module>emailroute</module>
     </modules>
 
 </project>

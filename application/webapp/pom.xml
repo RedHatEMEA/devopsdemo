@@ -13,6 +13,8 @@
 	<artifactId>webapp</artifactId>
 	<packaging>war</packaging>
 
+	<name>Ticketmonster :: Webapp</name>
+	
 	<build>
 		<plugins>
 			<plugin>
