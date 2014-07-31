@@ -1,7 +1,8 @@
 #!/bin/bash -ex
 
 PREFIX=${PREFIX:-$(utils/rnd.py)}
-VERSION=${VERSION:-11}
+VERSION=${VERSION:-12}
+LITE=${LITE:-yes}
 
 if [ -z $OS_AUTH_URL ]; then
   echo "error: must set OpenStack credentials"
@@ -18,7 +19,12 @@ get_openshift_ip() {
 
 deploy_app_instances() {
   heat stack-create $PREFIX-database -e ../infrastructure/environment.yaml -f ../infrastructure/database/template.yaml -P dns_nameservers=$DNS_IP || true
-  heat stack-create $PREFIX-fabric -e ../infrastructure/environment.yaml -f ../infrastructure/fabric/template.yaml -P dns_nameservers=$DNS_IP || true
+  if [ $LITE = yes ]
+  then 
+    heat stack-create $PREFIX-fabric -e ../infrastructure/environment.yaml -f ../infrastructure/fabric-lite/template.yaml -P dns_nameservers=$DNS_IP || true
+  else
+    heat stack-create $PREFIX-fabric -e ../infrastructure/environment.yaml -f ../infrastructure/fabric/template.yaml -P dns_nameservers=$DNS_IP || true
+  fi
 }
 
 deploy_app_database() {
