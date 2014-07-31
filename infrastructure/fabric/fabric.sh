@@ -82,7 +82,8 @@ EOF
 
 fuse_create_fabric() {
   su - $FUSE_USER <<EOF
-/usr/local/$FUSE_VERSION/bin/client "fabric:create --wait-for-provisioning --resolver manualip --manual-ip $FLOATING_IP_ADDR"
+/usr/local/$FUSE_VERSION/bin/client "fabric:create --wait-for-provisioning --resolver manualip --manual-ip $FLOATING_IP_ADDR --profile fabric"
+/usr/local/$FUSE_VERSION/bin/client "container-create-child --profile mq-amq root broker"
 EOF
 }
 
