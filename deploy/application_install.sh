@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
 PREFIX=${PREFIX:-$(utils/rnd.py)}
-VERSION=${VERSION:-14}
+VERSION=${VERSION:-15}
 LITE=${LITE:-yes}
 
 if [ -z $OS_AUTH_URL ]; then

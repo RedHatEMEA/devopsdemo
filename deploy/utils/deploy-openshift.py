@@ -54,7 +54,6 @@ if __name__ == "__main__":
         baseurl = sys.argv[4] # "http://10.33.7.1/cxf/"
         id = api.application_create("demo", 
                                     name = name,
-                                    scale = True,
                                     cartridges = "jbosseap-6",
                                     gear_size = "small",
                                     environment_variables = [{"name": "BASEURL",
