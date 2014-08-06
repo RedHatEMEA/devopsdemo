@@ -15,6 +15,6 @@ Create the file infrastructure/environment.yaml, based on infrastructure/environ
 
 * "Source" your keystonerc file by typing the following:
   $ . keystonerc
-* Run deploy/infrastructure.sh to create your DNS and OpenShift servers.
+* Run deploy/infrastructure_install.sh to create your DNS and OpenShift servers.
 
-* Run deploy/application.sh to deploy the application.
+* Run deploy/application_install.sh to deploy the application.
