@@ -6,7 +6,7 @@ FUSE_VERSION=${FUSE_VERSION:-jboss-fuse-6.1.0.redhat-379}
 
 LOCAL_IP_ADDR=$(ifconfig eth0 | sed -ne '/inet addr:/ { s/.*inet addr://; s/ .*//; p }')
 FLOATING_IP_ADDR=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
-FUSE_USER=ec2-user
+FUSE_USER=cloud-user
 
 fix_gso() {
   cat >>/etc/rc.local <<EOF

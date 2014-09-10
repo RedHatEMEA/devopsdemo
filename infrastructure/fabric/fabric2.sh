@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 FUSE_VERSION=${FUSE_VERSION:-jboss-fuse-6.1.0.redhat-379}
-FUSE_USER=ec2-user
+FUSE_USER=cloud-user
 
 fuse_container_wait() {
   su - $FUSE_USER <<EOF
