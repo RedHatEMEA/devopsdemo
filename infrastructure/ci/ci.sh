@@ -2,7 +2,6 @@
 
 SATELLITE_IP_ADDR=${SATELLITE_IP_ADDR:-10.33.11.10}
 PROXY_IP_ADDR=${PROXY_IP_ADDR:-10.33.11.12}
-GIT_URL=${GIT_URL:-https://github.com/RedHatEMEA/devopsdemo.git}
 
 LOCAL_IP_ADDR=$(ifconfig eth0 | sed -ne '/inet addr:/ { s/.*inet addr://; s/ .*//; p }')
 FLOATING_IP_ADDR=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)

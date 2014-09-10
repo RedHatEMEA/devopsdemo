@@ -1,6 +1,7 @@
 parameters:
   public_net: xxx
   key_name: xxx
+  git_url: https://github.com/RedHatEMEA/devopsdemo.git
 
 resource_registry:
   "Library::Net": library/net.yaml

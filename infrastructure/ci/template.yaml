@@ -13,6 +13,9 @@ parameters:
   image:
     default: rhel-guest-image-6-6.5-20140603.0-heat-agent
     type: string
+  git_url:
+    description: GitHub URL to watch
+    type: string
 
 resources:
   net_ci:
@@ -57,7 +60,8 @@ resources:
     properties:
       config: { get_resource: softwareconfig }
       server: { get_resource: server }
-      input_values: {}
+      input_values:
+        GIT_URL: { get_param: git_url }
 
 outputs:
   CI_IP:
