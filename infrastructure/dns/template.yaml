@@ -49,8 +49,8 @@ resources:
   dns_softwareconfig:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: dns.sh }
+      group: tgz
+      config: { get_file: dns.tgz }
 
   dns_softwaredeployment:
     type: OS::Heat::SoftwareDeployment

@@ -49,8 +49,8 @@ resources:
   broker_softwareconfig1:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: broker.sh }
+      group: tgz
+      config: { get_file: broker.tgz }
 
   broker_softwaredeployment1:
     type: OS::Heat::SoftwareDeployment
@@ -62,8 +62,8 @@ resources:
   broker_softwareconfig2:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: broker2.sh }
+      group: tgz
+      config: { get_file: broker-2.tgz }
 
   broker_softwaredeployment2:
     depends_on: [ node1_softwaredeployment1, node2_softwaredeployment1 ]
@@ -97,8 +97,8 @@ resources:
   node1_softwareconfig1:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: node.sh }
+      group: tgz
+      config: { get_file: node.tgz }
 
   node1_softwaredeployment1:
     type: OS::Heat::SoftwareDeployment
@@ -132,8 +132,8 @@ resources:
   node2_softwareconfig1:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: node.sh }
+      group: tgz
+      config: { get_file: node.tgz }
 
   node2_softwaredeployment1:
     type: OS::Heat::SoftwareDeployment

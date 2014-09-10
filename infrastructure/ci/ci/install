@@ -1,0 +1,80 @@
+#!/bin/bash -x
+
+. shared.sh
+
+maven_install() {
+  curl -s http://$PROXY_IP_ADDR/apache-maven-3.2.3-bin.tar.gz | (cd /usr/local && tar -xz)
+}
+
+nexus_install() {
+  curl -s http://$PROXY_IP_ADDR/nexus-2.9.1-02-bundle.tar.gz | (cd /usr/local && tar -xz)
+
+  cat >>/etc/rc.local <<EOF
+RUN_AS_USER=root $(echo /usr/local/nexus-*/bin)/nexus start
+EOF
+}
+
+nexus_configure() {
+  sed -i -e "s/\$PROXY_IP_ADDR/$PROXY_IP_ADDR/" nexus.xml
+
+  mkdir /usr/local/sonatype-work/nexus/conf
+  cp nexus.xml /usr/local/sonatype-work/nexus/conf
+}
+
+nexus_start() {
+  RUN_AS_USER=root /usr/local/nexus-*/bin/nexus start
+
+  while ! curl -fsm 1 -o /dev/null http://localhost:8081/nexus; do
+    sleep 1
+  done
+}
+
+jenkins_install() {
+  rpm -i http://$PROXY_IP_ADDR/jenkins-1.579-1.1.noarch.rpm
+  chkconfig jenkins on
+}
+
+jenkins_configure_prestart() {
+  sed -i -e "s!\$MAVEN_HOME!$(echo /usr/local/apache-maven-*)!" hudson.tasks.Maven.xml
+  cp hudson.tasks.Maven.xml /var/lib/jenkins
+
+  mkdir /var/lib/jenkins/updates
+  curl -Ls http://updates.jenkins-ci.org/update-center.json | sed -ne 2p >/var/lib/jenkins/updates/default.json
+
+  mkdir /var/lib/jenkins/.m2
+  cp settings.xml /var/lib/jenkins/.m2
+
+  chown -R jenkins:jenkins /var/lib/jenkins
+}
+
+jenkins_start() {
+  service jenkins start
+
+  while ! curl -fsm 1 -o /dev/null http://localhost:8080/; do
+    sleep 1
+  done
+}
+
+jenkins_cli() {
+  [ -e /tmp/jenkins-cli.jar ] || curl -so /tmp/jenkins-cli.jar http://localhost:8080/jnlpJars/jenkins-cli.jar
+  java -jar /tmp/jenkins-cli.jar -s http://localhost:8080/ "$@"
+}
+
+register_channels rhel-x86_64-server-6
+install_packages git java-1.7.0-openjdk-devel
+
+maven_install
+
+nexus_install
+nexus_configure
+nexus_start
+
+jenkins_install
+jenkins_configure_prestart
+jenkins_start
+
+jenkins_cli install-plugin git -deploy
+
+sed -e "s!\$GIT_URL!$GIT_URL!" < devopsdemo.xml | jenkins_cli create-job devopsdemo
+
+disable_firewall

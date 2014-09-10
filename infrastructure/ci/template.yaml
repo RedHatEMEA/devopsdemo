@@ -52,8 +52,8 @@ resources:
   softwareconfig:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: ci.sh }
+      group: tgz
+      config: { get_file: ci.tgz }
 
   softwaredeployment:
     type: OS::Heat::SoftwareDeployment

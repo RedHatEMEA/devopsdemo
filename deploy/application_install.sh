@@ -81,6 +81,7 @@ deploy_app_openshift() {
   utils/deploy-openshift.py create https://$BROKER_IP/broker/rest ${PREFIX}monster $CONTAINER_URL/cxf/ "http://$CI_IP:8081/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/0.1-$VERSION/webapp-0.1-$VERSION.tar.gz"
 }
 
+( cd ../infrastructure && ./make.sh )
 get_ci_ip
 get_dns_ip
 get_openshift_ip

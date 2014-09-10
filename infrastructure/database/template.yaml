@@ -49,8 +49,8 @@ resources:
   softwareconfig:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: postgresql.sh }
+      group: tgz
+      config: { get_file: database.tgz }
 
   softwaredeployment:
     type: OS::Heat::SoftwareDeployment

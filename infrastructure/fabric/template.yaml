@@ -52,8 +52,8 @@ resources:
   root_softwareconfig:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: fabric.sh }
+      group: tgz
+      config: { get_file: fabric.tgz }
 
   root_softwaredeployment:
     type: OS::Heat::SoftwareDeployment
@@ -88,8 +88,8 @@ resources:
   root2_softwareconfig:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: fabric.sh }
+      group: tgz
+      config: { get_file: fabric.tgz }
 
   root2_softwaredeployment:
     depends_on: root_softwaredeployment
@@ -126,8 +126,8 @@ resources:
   root3_softwareconfig:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: fabric.sh }
+      group: tgz
+      config: { get_file: fabric.tgz }
 
   root3_softwaredeployment:
     depends_on: root_softwaredeployment
@@ -143,8 +143,8 @@ resources:
   root_softwareconfig2:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: fabric2.sh }
+      group: tgz
+      config: { get_file: fabric-2.tgz }
 
   root_softwaredeployment2:
     depends_on: [ root2_softwaredeployment, root3_softwaredeployment ]

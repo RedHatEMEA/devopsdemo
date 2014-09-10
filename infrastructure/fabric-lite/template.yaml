@@ -52,8 +52,8 @@ resources:
   root_softwareconfig:
     type: OS::Heat::SoftwareConfig
     properties:
-      group: script
-      config: { get_file: fabric.sh }
+      group: tgz
+      config: { get_file: fabric.tgz }
 
   root_softwaredeployment:
     type: OS::Heat::SoftwareDeployment

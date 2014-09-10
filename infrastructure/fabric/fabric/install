@@ -1,46 +1,9 @@
 #!/bin/bash -x
 
-SATELLITE_IP_ADDR=${SATELLITE_IP_ADDR:-10.33.11.10}
-PROXY_IP_ADDR=${PROXY_IP_ADDR:-10.33.11.12}
+. shared.sh
+
 FUSE_VERSION=${FUSE_VERSION:-jboss-fuse-6.1.0.redhat-379}
-
-LOCAL_IP_ADDR=$(ifconfig eth0 | sed -ne '/inet addr:/ { s/.*inet addr://; s/ .*//; p }')
-FLOATING_IP_ADDR=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
 FUSE_USER=cloud-user
-
-fix_gso() {
-  cat >>/etc/rc.local <<EOF
-ethtool -K eth0 gso off
-ethtool -K eth0 tso off
-EOF
-
-  ethtool -K eth0 gso off
-  ethtool -K eth0 tso off
-}
-
-set_tz() {
-  ln -sf /usr/share/zoneinfo/$1 /etc/localtime 
-}
-
-register_channels() {
-  for CHANNEL in $*
-  do
-    curl -so /etc/yum.repos.d/$CHANNEL.repo http://$SATELLITE_IP_ADDR:8085/$CHANNEL.repo
-  done
-}
-
-install_packages() {
-  python -u /usr/bin/yum -y install $*
-}
-
-disable_firewall() {
-  service iptables stop
-  chkconfig iptables off
-}
-
-fuse_fix_hosts() {
-  echo "$LOCAL_IP_ADDR $(hostname)" >>/etc/hosts
-}
 
 fuse_install() {
   curl -so /tmp/$FUSE_VERSION.zip http://$PROXY_IP_ADDR/jboss-fuse-medium-6.1.0.redhat-379.zip
@@ -93,14 +56,11 @@ fuse_join_fabric() {
 EOF
 }
 
-fix_gso
-set_tz Europe/London
 register_channels rhel-x86_64-server-6
 install_packages java-1.7.0-openjdk unzip
 
 disable_firewall
 
-fuse_fix_hosts
 fuse_install
 fuse_create_admin_user admin admin
 fuse_set_container_name $CONF_NODE
