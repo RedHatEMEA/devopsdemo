@@ -37,7 +37,7 @@ register_channels() {
 }
 
 install_packages() {
-  yum -y install $*
+  python -u /usr/bin/yum -y install $*
 }
 
 ose_register_dns() {

@@ -13,56 +13,52 @@ parameters:
   image:
     default: rhel-guest-image-6-6.5-20140603.0-heat-agent
     type: string
-  ci_ip_address:
-    description: IP of CI server
-    type: string
 
 resources:
-  net_fabric:
+  net_ci:
     type: Library::Net
     properties:
       public_net: { get_param: public_net }
-      cidr: 172.16.2/24
-      gateway_ip: 172.16.2.254
-      start: 172.16.2.1
-      end: 172.16.2.253
+      cidr: 172.16.4/24
+      gateway_ip: 172.16.4.254
+      start: 172.16.4.1
+      end: 172.16.4.253
       dns_nameservers: { get_param: dns_nameservers }
 
-  root_server:
+  server:
     type: OS::Nova::Server
     properties:
       image: { get_param: image }
       flavor: m1.small
       key_name: { get_param: key_name }
       networks:
-        - port: { get_resource: root_port }
+        - port: { get_resource: port }
       user_data_format: SOFTWARE_CONFIG
 
-  root_port:
+  port:
     type: OS::Neutron::Port
     properties:
-      network_id: { get_attr: [ net_fabric, id ] }
+      network_id: { get_attr: [ net_ci, id ] }
 
-  root_floatingip:
+  floatingip:
     type: OS::Neutron::FloatingIP
     properties:
       floating_network_id: { get_param: public_net } 
-      port_id: { get_resource: root_port }
+      port_id: { get_resource: port }
 
-  root_softwareconfig:
+  softwareconfig:
     type: OS::Heat::SoftwareConfig
     properties:
       group: script
-      config: { get_file: fabric.sh }
+      config: { get_file: ci.sh }
 
-  root_softwaredeployment:
+  softwaredeployment:
     type: OS::Heat::SoftwareDeployment
     properties:
-      config: { get_resource: root_softwareconfig }
-      server: { get_resource: root_server }
-      input_values:
-        CONF_CI_IP_ADDR: { get_param: ci_ip_address }
+      config: { get_resource: softwareconfig }
+      server: { get_resource: server }
+      input_values: {}
 
 outputs:
-  ROOT_IP:
-    value: { get_attr: [ root_floatingip, floating_ip_address ] }
+  CI_IP:
+    value: { get_attr: [ floatingip, floating_ip_address ] }

@@ -30,7 +30,7 @@ register_channels() {
 }
 
 install_packages() {
-  yum -y install $*
+  python -u /usr/bin/yum -y install $*
 }
 
 disable_firewall() {
@@ -57,7 +57,7 @@ fuse_set_container_name() {
 
 fuse_set_nexus() {
   sed -i -e "/^org.ops4j.pax.url.mvn.repositories=/,/[^\]$/ d; $ a\
-org.ops4j.pax.url.mvn.repositories=http://$PROXY_IP_ADDR:8081/nexus/content/groups/public@id=mirror.repo" /usr/local/$FUSE_VERSION/fabric/import/fabric/configs/versions/1.0/profiles/default/io.fabric8.agent.properties
+org.ops4j.pax.url.mvn.repositories=http://$CONF_CI_IP_ADDR:8081/nexus/content/groups/public@id=mirror.repo" /usr/local/$FUSE_VERSION/fabric/import/fabric/configs/versions/1.0/profiles/default/io.fabric8.agent.properties
 }
 
 fuse_disable_indexer() {

@@ -16,7 +16,6 @@ prepare_fabric() {
   TMPDIR=$(mktemp -d)
 
   pushd $TMPDIR
-  ping -c 2 $ROOT_IP &>/dev/null || true
   git clone -b 1.0 http://admin:admin@$ROOT_IP:8181/git/fabric
   cd fabric
   git branch $VERSION

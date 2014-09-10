@@ -13,6 +13,9 @@ parameters:
   image:
     default: rhel-guest-image-6-6.5-20140603.0-heat-agent
     type: string
+  ci_ip_address:
+    description: IP of CI server
+    type: string
 
 resources:
   net_fabric:
@@ -58,6 +61,7 @@ resources:
       config: { get_resource: root_softwareconfig }
       server: { get_resource: root_server }
       input_values:
+        CONF_CI_IP_ADDR: { get_param: ci_ip_address }
         CONF_NODE: root
 
   root2_server:
@@ -94,6 +98,7 @@ resources:
       config: { get_resource: root2_softwareconfig }
       server: { get_resource: root2_server }
       input_values:
+        CONF_CI_IP_ADDR: { get_param: ci_ip_address }
         CONF_NODE: root2
         CONF_NODE1_IP_ADDR: { get_attr: [ root_floatingip, floating_ip_address ] }
 
@@ -131,6 +136,7 @@ resources:
       config: { get_resource: root3_softwareconfig }
       server: { get_resource: root3_server }
       input_values:
+        CONF_CI_IP_ADDR: { get_param: ci_ip_address }
         CONF_NODE: root3
         CONF_NODE1_IP_ADDR: { get_attr: [ root_floatingip, floating_ip_address ] }
 
