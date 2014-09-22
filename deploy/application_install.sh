@@ -62,7 +62,7 @@ user = admin
 password = password
 EOF
   cat >$TMPDIR/fabric/fabric/profiles/ticketmonster/emailroute.profile/email.properties <<EOF
-smtp.email.server = 10.33.11.11
+smtp.email.server = 10.4.122.10
 EOF
 
   pushd $TMPDIR
