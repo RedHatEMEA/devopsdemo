@@ -20,18 +20,7 @@ controls {
         inet 127.0.0.1 port 953
         allow { 127.0.0.1; } keys { rndc-key; };
 };
-
-include "devopsdemo.key";
 EOF
-
-  cat >/var/named/devopsdemo.key <<EOF
-key devopsdemo {
-  algorithm "HMAC-SHA256";
-  secret "$BIND_KEY";
-};
-EOF
-  chown root:named /var/named/devopsdemo.key
-  chmod 0640 /var/named/devopsdemo.key
 
   rndc-confgen -a -r /dev/urandom
   chown root:named /etc/rndc.key
@@ -46,6 +35,8 @@ zone "$1" IN {
         file "dynamic/$1.db";
         allow-update { key devopsdemo; } ;
 };
+
+include "$1.key";
 EOF
 
   cat >/var/named/dynamic/$1.db <<EOF
@@ -58,6 +49,16 @@ EOF
 	NS	ns1
 ns1	IN	A	$FLOATING_IP_ADDR
 EOF
+
+  cat >/var/named/$1.key <<EOF
+key $1 {
+  algorithm "HMAC-SHA256";
+  secret "$BIND_KEY";
+};
+EOF
+
+  chown root:named /var/named/$1.key
+  chmod 0640 /var/named/$1.key
 }
 
 register_channels rhel-x86_64-server-6

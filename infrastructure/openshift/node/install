@@ -51,6 +51,6 @@ export CONF_NO_SCRAMBLE=true
 register_channels rhel-x86_64-server-6 rhel-x86_64-server-6-rhscl-1 rhel-x86_64-server-6-ose-2.1-node rhel-x86_64-server-6-ose-2.1-jbosseap jbappplatform-6-x86_64-server-6-rpm jb-ews-2-x86_64-server-6-rpm
 install_packages bind-utils
 
-register_dns $CONF_NODE_HOSTNAME A $CONF_NODE_IP_ADDR
+register_dns $(hostname) $CONF_DOMAIN A $CONF_NODE_IP_ADDR
 ose_install
 ose_node_configure

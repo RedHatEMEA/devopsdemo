@@ -35,10 +35,10 @@ fix_hosts() {
 }
 
 register_dns() {
-  nsupdate -y HMAC-SHA256:devopsdemo:$BIND_KEY <<EOF
+  nsupdate -y HMAC-SHA256:$2:$BIND_KEY <<EOF
 server $DNS_IP_ADDR
-update delete $1 $2
-update add $1 180 $2 $3
+update delete $1.$2 $3
+update add $1.$2 180 $3 $4
 send
 EOF
 }

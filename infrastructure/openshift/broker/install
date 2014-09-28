@@ -30,7 +30,7 @@ export CONF_OPENSHIFT_PASSWORD1=demo
 register_channels rhel-x86_64-server-6 rhel-x86_64-server-6-rhscl-1 rhel-x86_64-server-6-ose-2.1-infrastructure rhel-x86_64-server-6-ose-2.1-rhc
 install_packages bind-utils
 
-register_dns broker.$CONF_DOMAIN A $CONF_BROKER_IP_ADDR
-register_dns activemq.$CONF_DOMAIN A $CONF_BROKER_IP_ADDR
+register_dns broker $CONF_DOMAIN A $CONF_BROKER_IP_ADDR
+register_dns activemq $CONF_DOMAIN A $CONF_BROKER_IP_ADDR
 ose_install
 enable_admin_console
