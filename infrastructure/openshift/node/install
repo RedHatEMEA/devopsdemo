@@ -2,15 +2,6 @@
 
 . shared.sh
 
-ose_register_dns() {
-  nsupdate -y HMAC-SHA256:$CONF_DOMAIN:$CONF_BIND_KEY <<EOF
-server $CONF_NAMED_IP_ADDR
-update delete $1 $2
-update add $1 180 $2 $3
-send
-EOF
-}
-
 ose_install() {
   curl -so /tmp/openshift.sh https://raw.githubusercontent.com/openshift/openshift-extras/enterprise-2.1/enterprise/install-scripts/generic/openshift.sh
   chmod 0755 /tmp/openshift.sh
@@ -48,9 +39,9 @@ EOF
 }
 
 export CONF_BIND_KEY=$BIND_KEY
-export CONF_DOMAIN=$OSE_DOMAIN
+export CONF_DOMAIN=openshift.demo
 export CONF_NODE_IP_ADDR=$FLOATING_IP_ADDR
-export CONF_NAMED_IP_ADDR=$(sed -ne '/nameserver/ {s/nameserver //; p; }' /etc/resolv.conf)
+export CONF_NAMED_IP_ADDR=$DNS_IP_ADDR
 export CONF_NODE_HOSTNAME=$(hostname).$CONF_DOMAIN
 export CONF_INSTALL_COMPONENTS=node
 export CONF_KEEP_HOSTNAME=true
@@ -60,6 +51,6 @@ export CONF_NO_SCRAMBLE=true
 register_channels rhel-x86_64-server-6 rhel-x86_64-server-6-rhscl-1 rhel-x86_64-server-6-ose-2.1-node rhel-x86_64-server-6-ose-2.1-jbosseap jbappplatform-6-x86_64-server-6-rpm jb-ews-2-x86_64-server-6-rpm
 install_packages bind-utils
 
-ose_register_dns $CONF_NODE_HOSTNAME A $CONF_NODE_IP_ADDR
+register_dns $CONF_NODE_HOSTNAME A $CONF_NODE_IP_ADDR
 ose_install
 ose_node_configure

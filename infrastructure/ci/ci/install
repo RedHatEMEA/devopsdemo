@@ -61,7 +61,9 @@ jenkins_cli() {
 }
 
 register_channels rhel-x86_64-server-6
-install_packages git java-1.7.0-openjdk-devel
+install_packages bind-utils git java-1.7.0-openjdk-devel
+
+register_dns ci.demo A $FLOATING_IP_ADDR
 
 maven_install
 

@@ -2,19 +2,71 @@
 
 . shared.sh
 
-ose_install() {
-  curl -so /tmp/openshift.sh https://raw.githubusercontent.com/openshift/openshift-extras/enterprise-2.1/enterprise/install-scripts/generic/openshift.sh
-  chmod 0755 /tmp/openshift.sh
-  /tmp/openshift.sh
+dns_configure() {
+  cat >/etc/named.conf <<EOF
+options {
+        directory       "/var/named";
+        allow-transfer  { none; };
+        allow-query     { any; };
+
+        forward only;
+        forwarders { $DNS_IP_ADDR; };
+        recursion yes;
+};
+
+include "/etc/rndc.key";
+
+controls {
+        inet 127.0.0.1 port 953
+        allow { 127.0.0.1; } keys { rndc-key; };
+};
+
+include "devopsdemo.key";
+EOF
+
+  cat >/var/named/devopsdemo.key <<EOF
+key devopsdemo {
+  algorithm "HMAC-SHA256";
+  secret "$BIND_KEY";
+};
+EOF
+  chown root:named /var/named/devopsdemo.key
+  chmod 0640 /var/named/devopsdemo.key
+
+  rndc-confgen -a -r /dev/urandom
+  chown root:named /etc/rndc.key
+  chmod 0640 /etc/rndc.key
 }
 
-export CONF_BIND_KEY=$BIND_KEY
-export CONF_DOMAIN=$OSE_DOMAIN
-export CONF_NAMED_IP_ADDR=$FLOATING_IP_ADDR
-export CONF_INSTALL_COMPONENTS=named
-export CONF_FORWARD_DNS=true
-export CONF_KEEP_HOSTNAME=true
-export CONF_KEEP_NAMESERVERS=true
+dns_add_domain() {
+  cat >>/etc/named.conf <<EOF
+
+zone "$1" IN {
+        type master;
+        file "dynamic/$1.db";
+        allow-update { key devopsdemo; } ;
+};
+EOF
+
+  cat >/var/named/dynamic/$1.db <<EOF
+@	IN	SOA	ns1	hostmaster	(
+					1    ; serial
+					60   ; refresh
+					15   ; retry
+					1800 ; expire
+					10)  ; minimum
+	NS	ns1
+ns1	IN	A	$FLOATING_IP_ADDR
+EOF
+}
 
 register_channels rhel-x86_64-server-6
-ose_install
+install_packages bind
+
+dns_configure
+dns_add_domain demo
+dns_add_domain openshift.demo
+
+chkconfig named on
+service named start
+lokkit -p 53:udp

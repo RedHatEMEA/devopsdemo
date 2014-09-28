@@ -34,8 +34,25 @@ fix_hosts() {
   echo "$LOCAL_IP_ADDR $(hostname)" >>/etc/hosts
 }
 
+register_dns() {
+  nsupdate -y HMAC-SHA256:devopsdemo:$BIND_KEY <<EOF
+server $DNS_IP_ADDR
+update delete $1 $2
+update add $1 180 $2 $3
+send
+EOF
+}
+
 LOCAL_IP_ADDR=$(ifconfig eth0 | sed -ne '/inet addr:/ { s/.*inet addr://; s/ .*//; p }')
-FLOATING_IP_ADDR=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+while true; do
+  FLOATING_IP_ADDR=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+  if [ $FLOATING_IP_ADDR ]; then
+    break
+  fi
+
+  sleep 1
+done
+DNS_IP_ADDR=$(sed -ne '/nameserver/ {s/nameserver //; p; }' /etc/resolv.conf)
 
 fix_gso
 fix_hosts

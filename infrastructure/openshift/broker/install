@@ -2,15 +2,6 @@
 
 . shared.sh
 
-ose_register_dns() {
-  nsupdate -y HMAC-SHA256:$CONF_DOMAIN:$CONF_BIND_KEY <<EOF
-server $CONF_NAMED_IP_ADDR
-update delete $1 $2
-update add $1 180 $2 $3
-send
-EOF
-}
-
 ose_install() {
   curl -so /tmp/openshift.sh https://raw.githubusercontent.com/openshift/openshift-extras/enterprise-2.1/enterprise/install-scripts/generic/openshift.sh
   chmod 0755 /tmp/openshift.sh
@@ -27,9 +18,9 @@ enable_admin_console() {
 }
 
 export CONF_BIND_KEY=$BIND_KEY
-export CONF_DOMAIN=$OSE_DOMAIN
+export CONF_DOMAIN=openshift.demo
 export CONF_BROKER_IP_ADDR=$FLOATING_IP_ADDR
-export CONF_NAMED_IP_ADDR=$(sed -ne '/nameserver/ {s/nameserver //; p; }' /etc/resolv.conf)
+export CONF_NAMED_IP_ADDR=$DNS_IP_ADDR
 export CONF_INSTALL_COMPONENTS=broker,activemq,datastore
 export CONF_KEEP_HOSTNAME=true
 export CONF_KEEP_NAMESERVERS=true
@@ -39,7 +30,7 @@ export CONF_OPENSHIFT_PASSWORD1=demo
 register_channels rhel-x86_64-server-6 rhel-x86_64-server-6-rhscl-1 rhel-x86_64-server-6-ose-2.1-infrastructure rhel-x86_64-server-6-ose-2.1-rhc
 install_packages bind-utils
 
-ose_register_dns broker.$CONF_DOMAIN A $CONF_BROKER_IP_ADDR
-ose_register_dns activemq.$CONF_DOMAIN A $CONF_BROKER_IP_ADDR
+register_dns broker.$CONF_DOMAIN A $CONF_BROKER_IP_ADDR
+register_dns activemq.$CONF_DOMAIN A $CONF_BROKER_IP_ADDR
 ose_install
 enable_admin_console
