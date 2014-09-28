@@ -11,11 +11,14 @@ parameters:
     description: public DNS servers
     type: comma_delimited_list
   image:
-    default: rhel-guest-image-6-6.5-20140603.0-heat-agent
+    description: Glance image
     type: string
   ci_ip_address:
     description: IP of CI server
     type: string
+  security_groups:
+    description: Neutron security groups
+    type: comma_delimited_list
 
 resources:
   net_fabric:
@@ -42,6 +45,7 @@ resources:
     type: OS::Neutron::Port
     properties:
       network_id: { get_attr: [ net_fabric, id ] }
+      security_groups: { get_param: security_groups }
 
   root_floatingip:
     type: OS::Neutron::FloatingIP

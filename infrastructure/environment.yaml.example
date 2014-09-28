@@ -1,6 +1,8 @@
 parameters:
-  public_net: xxx
-  key_name: xxx
+  public_net: $PUBLIC_NET
+  key_name: $USER
+  image: rhel-guest-image-6-6.5-20140603.0-heat-agent
+  security_groups: devopsdemo
 
 resource_registry:
   "Library::Net": library/net.yaml
