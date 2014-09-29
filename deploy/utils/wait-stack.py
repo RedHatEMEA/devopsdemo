@@ -4,9 +4,9 @@ import os
 import sys
 import time
 from heatclient import client as heatclient
+from heatclient import exc
 from heatclient.common import template_utils
 from keystoneclient.v2_0 import client as ksclient
-import heatclient.exc
 
 def getclient():
   ks = ksclient.Client(auth_url = os.environ["OS_AUTH_URL"],
@@ -39,7 +39,7 @@ def wait_delete(hc, id):
       stack = hc.stacks.get(id)
       time.sleep(5)
 
-  except heatclient.exc.HTTPNotFound:
+  except exc.HTTPNotFound:
     pass
 
 if __name__ == "__main__":
