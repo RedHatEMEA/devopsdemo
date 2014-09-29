@@ -57,7 +57,9 @@ EOF
 }
 
 register_channels rhel-x86_64-server-6
-install_packages java-1.7.0-openjdk unzip
+install_packages bind-utils java-1.7.0-openjdk unzip
+
+register_dns $(hostname | cut -d- -f1,3) demo A $FLOATING_IP_ADDR
 
 disable_firewall
 

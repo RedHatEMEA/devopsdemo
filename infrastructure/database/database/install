@@ -24,7 +24,9 @@ EOF
 }
 
 register_channels rhel-x86_64-server-6
-install_packages postgresql-server
+install_packages bind-utils postgresql-server
+
+register_dns $(hostname | cut -d- -f1,2) demo A $FLOATING_IP_ADDR
 
 disable_firewall
 postgres_configure
