@@ -10,14 +10,14 @@ get_ips() {
 }
 
 delete_stacks() {
-  heat stack-delete $PREFIX-database
-  heat stack-delete $PREFIX-fabric
+  heat stack-delete $PREFIX-database || true
+  heat stack-delete $PREFIX-fabric || true
   utils/wait-stack.py $PREFIX-database delete
   utils/wait-stack.py $PREFIX-fabric delete
 }
 
 delete_openshift() {
-  utils/deploy-openshift.py delete https://$BROKER_IP/broker/rest ${PREFIX}monster
+  utils/deploy-openshift.py delete https://$BROKER_IP/broker/rest ${PREFIX}monster || true
 }
 
 get_ips
