@@ -1,15 +1,5 @@
 . config.sh
 
-fix_gso() {
-  cat >>/etc/rc.local <<EOF
-ethtool -K eth0 gso off
-ethtool -K eth0 tso off
-EOF
-
-  ethtool -K eth0 gso off
-  ethtool -K eth0 tso off
-}
-
 set_tz() {
   ln -sf /usr/share/zoneinfo/$1 /etc/localtime 
   echo ZONE=$1 >/etc/sysconfig/clock
@@ -59,6 +49,5 @@ while true; do
 done
 DNS_IP_ADDR=$(sed -ne '/nameserver/ {s/nameserver //; p; }' /etc/resolv.conf)
 
-fix_gso
 fix_hosts
 set_tz Europe/London
