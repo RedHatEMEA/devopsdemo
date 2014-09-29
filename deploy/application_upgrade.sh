@@ -26,7 +26,7 @@ prepare_fabric() {
   cp -a ../application/profiles/* $TMPDIR/fabric/fabric/profiles
   for FILE in $TMPDIR/fabric/fabric/profiles/ticketmonster/*/io.fabric8.agent.properties
   do
-    sed -i -e "s/SNAPSHOT/$VERSION/g" $FILE
+    sed -i -e "s/0.1-SNAPSHOT/$VERSION/g" $FILE
   done
   cat >$TMPDIR/fabric/fabric/profiles/ticketmonster/rest.profile/database.properties <<EOF
 serverName = $DATABASE_IP
@@ -54,7 +54,7 @@ upgrade_fabric() {
 }
 
 upgrade_openshift() {
-  utils/deploy-openshift.py upgrade https://$BROKER_IP/broker/rest ${PREFIX}monster $CONTAINER_URL/cxf/ "http://$CI_IP:8081/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/0.1-$VERSION/webapp-0.1-$VERSION.tar.gz"
+  utils/deploy-openshift.py upgrade https://$BROKER_IP/broker/rest ${PREFIX}monster $CONTAINER_URL/cxf/ "http://$CI_IP:8081/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/$VERSION/webapp-$VERSION.tar.gz"
 }
 
 get_ips

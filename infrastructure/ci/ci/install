@@ -29,12 +29,15 @@ nexus_start() {
   done
 }
 
-jenkins_install() {
-  rpm -i http://$PROXY_IP_ADDR/jenkins-1.579-1.1.noarch.rpm
-  chkconfig jenkins on
+register_jenkins_repo() {
+  curl -so /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+  rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
 }
 
 jenkins_configure_prestart() {
+  sed -i -e '/^JENKINS_JAVA_OPTIONS=/ {s!"$! -Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/London"!; }' /etc/sysconfig/jenkins
+  sed -i -e 's/^JENKINS_ARGS=.*/JENKINS_ARGS="--prefix=/jenkins"/' /etc/sysconfig/jenkins
+
   sed -i -e "s!\$MAVEN_HOME!$(echo /usr/local/apache-maven-*)!" hudson.tasks.Maven.xml
   cp hudson.tasks.Maven.xml /var/lib/jenkins
 
@@ -48,6 +51,7 @@ jenkins_configure_prestart() {
 }
 
 jenkins_start() {
+  chkconfig jenkins on
   service jenkins start
 
   while ! curl -fsm 1 -o /dev/null http://localhost:8080/; do
@@ -60,8 +64,29 @@ jenkins_cli() {
   java -jar /tmp/jenkins-cli.jar -s http://localhost:8080/ "$@"
 }
 
-register_channels rhel-x86_64-server-6
-install_packages bind-utils git java-1.7.0-openjdk-devel
+httpd_configure() {
+  cat >/etc/httpd/conf.d/proxy.conf <<EOF
+ProxyPass /nexus http://localhost:8081/nexus
+ProxyPassReverse /nexus http://localhost:8081/nexus
+ProxyPass /jenkins http://localhost:8080/jenkins nocanon
+ProxyPassReverse /jenkins http://localhost:8080/jenkins
+AllowEncodedSlashes On
+EOF
+
+  cat >/var/www/html/index.html <<EOF
+<p><a href="/nexus">Nexus</a>
+<br><a href="/jenkins">Jenkins</a>
+EOF
+
+  setsebool httpd_can_network_connect true
+  chkconfig httpd on
+  service httpd restart
+}
+
+register_channels rhel-x86_64-server-6 rhel-x86_64-server-6-ost-5
+register_jenkins_repo
+install_packages bind-utils gettext git httpd java-1.7.0-openjdk-devel jenkins postgresql python-heatclient python-neutronclient python-novaclient
+yum_update
 
 register_dns ci demo A $FLOATING_IP_ADDR
 
@@ -71,12 +96,17 @@ nexus_install
 nexus_configure
 nexus_start
 
-jenkins_install
 jenkins_configure_prestart
 jenkins_start
 
-jenkins_cli install-plugin git -deploy
+jenkins_cli install-plugin build-pipeline-plugin git -deploy
 
 sed -e "s!\$GIT_URL!$GIT_URL!" < devopsdemo.xml | jenkins_cli create-job devopsdemo
 
-disable_firewall
+httpd_configure
+
+lokkit -p 80:tcp
+
+cp keystonerc /etc
+chown root:jenkins /etc/keystonerc
+chmod 0640 /etc/keystonerc

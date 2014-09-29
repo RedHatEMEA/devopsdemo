@@ -25,6 +25,10 @@ install_packages() {
   python -u /usr/bin/yum -y install $*
 }
 
+yum_update() {
+  python -u /usr/bin/yum -y update
+}
+
 disable_firewall() {
   service iptables stop
   chkconfig iptables off

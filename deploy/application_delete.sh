@@ -12,6 +12,8 @@ get_ips() {
 delete_stacks() {
   heat stack-delete $PREFIX-database
   heat stack-delete $PREFIX-fabric
+  utils/wait-stack.py $PREFIX-database delete
+  utils/wait-stack.py $PREFIX-fabric delete
 }
 
 delete_openshift() {
