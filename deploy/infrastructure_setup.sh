@@ -12,8 +12,4 @@ neutron security-group-rule-create --direction ingress --protocol icmp devopsdem
 neutron security-group-rule-create --direction ingress --protocol tcp devopsdemo
 neutron security-group-rule-create --direction ingress --protocol udp devopsdemo
 
-nova keypair-add --pub_key ~/.ssh/id_rsa.pub $USER || true
-
-export PUBLIC_NET=$(neutron net-list --router:external True -f csv -c id --quote none |tail -1)
-
-envsubst <../infrastructure/environment.yaml.example >../infrastructure/environment.yaml
+utils/repo_setup.sh
