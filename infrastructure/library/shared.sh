@@ -12,6 +12,7 @@ EOF
 
 set_tz() {
   ln -sf /usr/share/zoneinfo/$1 /etc/localtime 
+  echo ZONE=$1 >/etc/sysconfig/clock
 }
 
 register_channels() {

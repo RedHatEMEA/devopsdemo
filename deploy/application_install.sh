@@ -79,7 +79,13 @@ EOF
 }
 
 deploy_app_openshift() {
-  utils/deploy-openshift.py create https://$BROKER_IP/broker/rest ${PREFIX}monster $CONTAINER_URL/cxf/ "http://$CI_IP:8081/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/$VERSION/webapp-$VERSION.tar.gz"
+  if [ $VERSION = "0.1-SNAPSHOT" ]; then
+    URL="http://$CI_IP:8081/nexus/content/repositories/snapshots/com/redhat/ticketmonster/webapp/$VERSION/webapp-$VERSION.tar.gz"
+  else
+    URL="http://$CI_IP:8081/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/$VERSION/webapp-$VERSION.tar.gz"
+  fi
+
+  utils/deploy-openshift.py create https://$BROKER_IP/broker/rest ${PREFIX}monster $CONTAINER_URL/cxf/ $URL
 }
 
 ( cd ../infrastructure && ./make.sh )
