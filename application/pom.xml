@@ -377,15 +377,6 @@
         </dependencies>
     </dependencyManagement>
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>deployment</id>
-			<name>deployment</name>
-			<url>http://localhost/nexus/content/repositories/snapshots/</url>
-			<uniqueVersion>false</uniqueVersion>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<build>
 		<plugins>
 			<plugin>
