@@ -111,11 +111,6 @@ chmod 0640 /etc/keystonerc
 jenkins_configure_prestart
 jenkins_start
 
-sed -i -e 's!<numExecutors>.*</numExecutors>!<numExecutors>5</numExecutors>!' /var/lib/jenkins/config.xml
-sed -i -e 's!<quietPeriod>.*</quietPeriod>!<quietPeriod>0</quietPeriod>!' /var/lib/jenkins/config.xml
-
-jenkins_cli reload-configuration
-
 jenkins_cli install-plugin build-pipeline-plugin git -deploy
 
 jenkins_cli quiet-down -block
@@ -127,6 +122,11 @@ done
 for i in views/*; do
   jenkins_cli create-view < "$i"
 done
+
+sed -i -e 's!<numExecutors>.*</numExecutors>!<numExecutors>5</numExecutors>!' /var/lib/jenkins/config.xml
+sed -i -e 's!<quietPeriod>.*</quietPeriod>!<quietPeriod>0</quietPeriod>!' /var/lib/jenkins/config.xml
+
+jenkins_cli reload-configuration
 
 jenkins_cli cancel-quiet-down
 
