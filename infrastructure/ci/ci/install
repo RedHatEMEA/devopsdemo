@@ -111,8 +111,8 @@ chmod 0640 /etc/keystonerc
 jenkins_configure_prestart
 jenkins_start
 
-sed -i -e 's!<numExecutors>.*</numExecutors>!<numExecutors>5</numExecutors>' /var/lib/jenkins/config.xml
-sed -i -e 's!<quietPeriod>.*</quietPeriod>!<quietPeriod>0</quietPeriod>' /var/lib/jenkins/config.xml
+sed -i -e 's!<numExecutors>.*</numExecutors>!<numExecutors>5</numExecutors>!' /var/lib/jenkins/config.xml
+sed -i -e 's!<quietPeriod>.*</quietPeriod>!<quietPeriod>0</quietPeriod>!' /var/lib/jenkins/config.xml
 
 jenkins_cli reload-configuration
 
