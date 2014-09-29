@@ -11,7 +11,7 @@
   <mirrors>
     <mirror>
       <mirrorOf>*</mirrorOf>
-      <url>http://127.0.0.1:8081/nexus/content/groups/public</url>
+      <url>http://localhost/nexus/content/groups/public</url>
       <id>mirror</id>
     </mirror>
   </mirrors>

@@ -16,7 +16,7 @@ ose_node_configure() {
   <mirrors>
     <mirror>
       <mirrorOf>*</mirrorOf>
-      <url>http://$PROXY_IP_ADDR:8081/nexus/content/groups/public</url>
+      <url>http://$PROXY_IP_ADDR/nexus/content/groups/public</url>
       <id>mirror</id>
     </mirror>
   </mirrors>
@@ -28,7 +28,7 @@ EOF
   <mirrors>
     <mirror>
       <mirrorOf>*</mirrorOf>
-      <url>http://$PROXY_IP_ADDR:8081/nexus/content/groups/public</url>
+      <url>http://$PROXY_IP_ADDR/nexus/content/groups/public</url>
       <id>mirror</id>
     </mirror>
   </mirrors>

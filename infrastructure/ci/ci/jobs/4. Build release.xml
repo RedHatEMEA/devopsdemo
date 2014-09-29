@@ -63,7 +63,7 @@
   </prebuilders>
   <postbuilders>
     <hudson.tasks.Shell>
-      <command>cd application &amp;&amp; mvn deploy -DaltDeploymentRepository=deployment::default::http://localhost:8081/nexus/content/repositories/releases/</command>
+      <command>cd application &amp;&amp; mvn deploy -DaltDeploymentRepository=deployment::default::http://localhost/nexus/content/repositories/releases/</command>
     </hudson.tasks.Shell>
   </postbuilders>
   <runPostStepsIfResult>

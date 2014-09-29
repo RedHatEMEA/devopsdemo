@@ -8,6 +8,8 @@ fi
 if ! [ -e ~/.ssh/id_rsa ]; then
   mkdir -p -m 0700 ~/.ssh
   ssh-keygen -f ~/.ssh/id_rsa -N ""
+
+  nova keypair-delete $USER || true
 fi
 
 nova keypair-add --pub_key ~/.ssh/id_rsa.pub $USER || true

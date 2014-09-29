@@ -54,7 +54,7 @@ upgrade_fabric() {
 }
 
 upgrade_openshift() {
-  utils/deploy-openshift.py upgrade https://$BROKER_IP/broker/rest ${PREFIX}monster $CONTAINER_URL/cxf/ "http://$CI_IP:8081/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/$VERSION/webapp-$VERSION.tar.gz"
+  utils/deploy-openshift.py upgrade https://$BROKER_IP/broker/rest ${PREFIX}monster $CONTAINER_URL/cxf/ "http://$CI_IP/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/$VERSION/webapp-$VERSION.tar.gz"
 }
 
 get_ips
