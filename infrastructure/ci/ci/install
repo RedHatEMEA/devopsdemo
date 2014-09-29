@@ -103,6 +103,10 @@ nexus_install
 nexus_configure
 nexus_start
 
+cp keystonerc /etc
+chown root:jenkins /etc/keystonerc
+chmod 0640 /etc/keystonerc
+
 jenkins_configure_prestart
 jenkins_start
 
@@ -121,7 +125,3 @@ done
 jenkins_cli cancel-quiet-down
 
 lokkit -p 80:tcp
-
-cp keystonerc /etc
-chown root:jenkins /etc/keystonerc
-chmod 0640 /etc/keystonerc

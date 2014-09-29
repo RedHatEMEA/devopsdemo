@@ -377,6 +377,13 @@
         </dependencies>
     </dependencyManagement>
 
+	<distributionManagement>
+		<snapshotRepository>
+			<id>deployment</id>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>

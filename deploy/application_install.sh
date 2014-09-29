@@ -33,10 +33,7 @@ deploy_app_instances() {
 
 deploy_app_database() {
   eval $(utils/wait-stack.py $PREFIX-database)
-  CONNSTRING="$DATABASE_IP:5432:ticketmonster:admin:password"
-  grep -q $CONNSTRING ~/.pgpass || echo $CONNSTRING >>~/.pgpass 
-  chmod 0600 ~/.pgpass
-  psql -h $DATABASE_IP -U admin ticketmonster <../application/database/import.sql &>/dev/null
+  PGPASSWORD=password psql -h $DATABASE_IP -U admin ticketmonster <../application/database/import.sql &>/dev/null
 }
 
 deploy_app_fabric() {
