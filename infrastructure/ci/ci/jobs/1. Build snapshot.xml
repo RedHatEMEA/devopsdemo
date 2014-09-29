@@ -64,7 +64,7 @@
   <prebuilders/>
   <postbuilders>
     <hudson.tasks.Shell>
-      <command>cd application &amp;&amp; mvn deploy -DaltDeploymentRepository=deployment::default::http://localhost/nexus/content/repositories/snapshots/</command>
+      <command>cd application &amp;&amp; mvn deploy</command>
     </hudson.tasks.Shell>
     <hudson.plugins.parameterizedtrigger.TriggerBuilder plugin="parameterized-trigger@2.25">
       <configs>
