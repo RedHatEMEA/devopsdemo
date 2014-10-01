@@ -36,7 +36,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>curl -o /dev/null http://jenkinsmonster-demo.openshift.demo/</command>
+      <command>curl -o /dev/null http://ticketmonster-jenkins.openshift.demo/</command>
     </hudson.tasks.Shell>
     <hudson.plugins.parameterizedtrigger.TriggerBuilder plugin="parameterized-trigger@2.25">
       <configs>
