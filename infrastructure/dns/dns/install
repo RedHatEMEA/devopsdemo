@@ -61,14 +61,39 @@ EOF
   chmod 0640 /var/named/$1.key
 }
 
+ldap_configure() {
+  sed -i -e 's/dc=my-domain,dc=com/dc=demo/g' '/etc/openldap/slapd.d/cn=config/olcDatabase={2}bdb.ldif'
+  sed -i -e '/^olcRootDN:/ a \
+olcRootPW: {SSHA}JgCivigKpOBo6wmantoxs2ex/7pd8Avf' '/etc/openldap/slapd.d/cn=config/olcDatabase={2}bdb.ldif'
+  sed -i -e 's/dc=my-domain,dc=com/dc=demo/g' '/etc/openldap/slapd.d/cn=config/olcDatabase={1}monitor.ldif'
+
+  chkconfig slapd on
+  service slapd start
+
+  ldapadd -D 'cn=Manager,dc=demo' -w redhat <<EOF
+dn: dc=demo
+dc: demo
+o: demo
+objectclass: organization
+objectclass: dcObject
+
+dn: ou=Users,dc=demo
+objectClass: organizationalUnit
+ou: Users
+EOF
+}
+
 register_channels rhel-x86_64-server-6
-install_packages bind
+install_packages bind openldap-servers
 yum_update
 
 dns_configure
 dns_add_domain demo
 dns_add_domain openshift.demo
 
+ldap_configure
+
 chkconfig named on
 service named start
-lokkit -p 53:udp
+
+lokkit -p 53:udp -p 389:tcp
