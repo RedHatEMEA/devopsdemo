@@ -33,21 +33,21 @@ dns_add_domain() {
 zone "$1" IN {
         type master;
         file "dynamic/$1.db";
-        allow-update { key $1; } ;
+        allow-update { key $1; };
 };
 
 include "$1.key";
 EOF
 
   cat >/var/named/dynamic/$1.db <<EOF
-@	IN	SOA	ns1	hostmaster	(
+@	IN	SOA	dns	hostmaster	(
 					1    ; serial
 					60   ; refresh
 					15   ; retry
 					1800 ; expire
 					10)  ; minimum
-	NS	ns1
-ns1	IN	A	$FLOATING_IP_ADDR
+	NS	dns
+dns	IN	A	$FLOATING_IP_ADDR
 EOF
 
   cat >/var/named/$1.key <<EOF

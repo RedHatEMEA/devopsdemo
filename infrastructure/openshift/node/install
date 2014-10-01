@@ -52,6 +52,6 @@ register_channels rhel-x86_64-server-6 rhel-x86_64-server-6-rhscl-1 rhel-x86_64-
 install_packages bind-utils
 
 register_dns $(hostname) $CONF_DOMAIN A $CONF_NODE_IP_ADDR
-register_dns $(hostname | cut -d- -f2) $CONF_DOMAIN CNAME $(hostname)
+register_dns $(hostname | cut -d- -f2) $CONF_DOMAIN CNAME $(hostname).$CONF_DOMAIN
 ose_install
 ose_node_configure
