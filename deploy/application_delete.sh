@@ -19,7 +19,7 @@ delete_stacks() {
 delete_openshift() {
   utils/deploy-openshift.py delete https://$BROKER_IP/broker/rest ticketmonster $PREFIX redhat || true
 
-  echo cn=$PREFIX,ou=Users,dc=demo | ldapdelete -H ldap://dns.demo/ -D 'cn=Manager,dc=demo' -w redhat
+  echo cn=$PREFIX,ou=Users,dc=demo | ldapdelete -H ldap://dns.demo/ -D 'cn=Manager,dc=demo' -w redhat || true
 }
 
 get_ips
