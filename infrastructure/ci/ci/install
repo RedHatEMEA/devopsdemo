@@ -91,7 +91,7 @@ EOF
 
 register_channels rhel-x86_64-server-6 rhel-x86_64-server-6-ost-5
 register_jenkins_repo
-install_packages bind-utils gettext git httpd java-1.7.0-openjdk-devel jenkins postgresql python-heatclient python-neutronclient python-novaclient
+install_packages bind-utils gettext git httpd java-1.7.0-openjdk-devel jenkins openldap-clients postgresql python-heatclient python-neutronclient python-novaclient
 yum_update
 
 register_dns ci demo A $FLOATING_IP_ADDR
