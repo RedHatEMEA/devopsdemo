@@ -44,7 +44,8 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>. /etc/keystonerc
+      <command>cp /etc/keystonerc .
+. keystonerc
 cd deploy
 utils/repo_setup.sh
 if heat stack-list | grep -q prod-fabric; then
