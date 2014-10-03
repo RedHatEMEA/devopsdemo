@@ -9,6 +9,14 @@ Jim Minter <jminter@redhat.com>, 29/09/2014
 
 ### Getting started
 
+1. You'll need the right software installed on your client.
+
+   On RHEL 6:
+
+   ```bash
+   $ yum -y install gettext git java-1.7.0-openjdk-devel openldap-clients postgresql python-heatclient python-neutronclient python-novaclient
+   ```
+
 1. Download a `keystonerc` file from your OpenStack tenant (hint: log in to Horizon (the OpenStack web interface) and navigate to http://openstack-hostname/dashboard/project/access_and_security/api_access/openrc/ to download).  This file **must** be placed in the root directory of this project and named keystonerc.
 
 1. Run `infrastructure_setup.sh` to prepare the OpenStack tenant.  This should need only ever to be run once per tenant:

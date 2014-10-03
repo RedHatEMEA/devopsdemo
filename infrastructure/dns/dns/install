@@ -84,7 +84,7 @@ EOF
 }
 
 register_channels rhel-x86_64-server-6
-install_packages bind openldap-servers
+install_packages bind openldap-clients openldap-servers
 yum_update
 
 dns_configure
