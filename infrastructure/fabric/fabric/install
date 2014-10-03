@@ -6,7 +6,9 @@ FUSE_VERSION=${FUSE_VERSION:-jboss-fuse-6.1.0.redhat-379}
 FUSE_USER=cloud-user
 
 fuse_install() {
-  curl -so /tmp/$FUSE_VERSION.zip http://$PROXY_IP_ADDR/jboss-fuse-medium-6.1.0.redhat-379.zip
+  while ! curl -so /tmp/$FUSE_VERSION.zip http://$PROXY_IP_ADDR/jboss-fuse-medium-6.1.0.redhat-379.zip; do
+    sleep 1
+  done
   unzip -q /tmp/$FUSE_VERSION.zip -d /usr/local
 }
 

@@ -4,7 +4,7 @@ PREFIX=${PREFIX:-$(utils/rnd.py)}
 VERSION=${VERSION:-0.1-SNAPSHOT}
 LITE=${LITE:-yes}
 
-FUSEVERSION=${VERSION//-/_}
+FUSEVERSION=${VERSION//-/.}
 
 if [ -z $OS_AUTH_URL ]; then
   echo "error: must set OpenStack credentials"

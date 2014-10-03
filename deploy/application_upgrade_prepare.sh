@@ -5,7 +5,7 @@ if [ -z $OS_AUTH_URL ] || [ -z $VERSION ] || [ -z $PREFIX ]; then
   exit 1
 fi
 
-FUSEVERSION=${VERSION//-/_}
+FUSEVERSION=${VERSION//-/.}
 
 get_ips() {
   eval $(utils/wait-stack.py ci)
