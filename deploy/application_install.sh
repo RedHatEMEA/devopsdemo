@@ -92,7 +92,7 @@ objectClass: person
 objectClass: top
 sn: $PREFIX
 userPassword: {SSHA}j0IDrK07yBa6qo0Ofh1L2M8kaVrPtn6f
-EOF
+EOF || true
 
   utils/deploy-openshift.py create https://$BROKER_IP/broker/rest ticketmonster $PREFIX redhat $CONTAINER_URL/cxf/ "$URL"
 }
