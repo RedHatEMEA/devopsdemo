@@ -54,7 +54,19 @@
   <settings class="jenkins.mvn.DefaultSettingsProvider"/>
   <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
   <reporters/>
-  <publishers/>
+  <publishers>
+    <au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger plugin="build-pipeline-plugin@1.4.3">
+      <configs>
+        <hudson.plugins.git.GitRevisionBuildParameters plugin="git@2.2.6">
+          <combineQueuedCommits>false</combineQueuedCommits>
+        </hudson.plugins.git.GitRevisionBuildParameters>
+        <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters plugin="parameterized-trigger@2.25">
+          <properties>VERSION=0.1-$BUILD_NUMBER</properties>
+        </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+      </configs>
+      <downstreamProjectNames>5. Deploy release to prod</downstreamProjectNames>
+    </au.com.centrumsystems.hudson.plugin.buildpipeline.trigger.BuildPipelineTrigger>
+  </publishers>
   <buildWrappers/>
   <prebuilders>
     <hudson.tasks.Shell>
