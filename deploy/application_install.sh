@@ -85,14 +85,15 @@ deploy_app_openshift() {
     URL="http://$CI_IP/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/$VERSION/webapp-$VERSION.tar.gz"
   fi
 
-  ldapadd -H ldap://dns.demo/ -D 'cn=Manager,dc=demo' -w redhat <<EOF
+  ( ldapadd -H ldap://dns.demo/ -D 'cn=Manager,dc=demo' -w redhat <<EOF
 dn: cn=$PREFIX,ou=Users,dc=demo
 cn: $PREFIX
 objectClass: person
 objectClass: top
 sn: $PREFIX
 userPassword: {SSHA}j0IDrK07yBa6qo0Ofh1L2M8kaVrPtn6f
-EOF || true
+EOF
+) || true
 
   utils/deploy-openshift.py create https://$BROKER_IP/broker/rest ticketmonster $PREFIX redhat $CONTAINER_URL/cxf/ "$URL"
 }
