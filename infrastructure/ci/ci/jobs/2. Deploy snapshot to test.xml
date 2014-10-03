@@ -37,14 +37,14 @@
   <builders>
     <hudson.tasks.Shell>
       <command>cp /etc/keystonerc .
-. keystonerc
+. ./keystonerc
 cd deploy
 utils/repo_setup.sh
 PREFIX=jenkins ./application_delete.sh</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>cp /etc/keystonerc .
-. keystonerc
+. ./keystonerc
 cd deploy
 PREFIX=jenkins ./application_install.sh</command>
     </hudson.tasks.Shell>
