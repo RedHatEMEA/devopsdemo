@@ -74,7 +74,8 @@ EOF
 
   rm -rf $TMPDIR
 
-  eval $(utils/deploy-fabric.py http://$ROOT_IP:8181/jolokia ticketmonster-rest $PREFIX-monster $FUSEVERSION)
+  eval $(utils/deploy-fabric.py http://$ROOT_IP:8181/jolokia ticketmonster-rest restapi $FUSEVERSION)
+  utils/deploy-fabric.py http://$ROOT_IP:8181/jolokia ticketmonster-emailroute emailroute $FUSEVERSION
 }
 
 deploy_app_openshift() {

@@ -16,7 +16,8 @@ get_ips() {
 }
 
 upgrade_fabric() {
-  eval $(utils/upgrade-fabric.py http://$ROOT_IP:8181/jolokia $PREFIX-monster $FUSEVERSION)
+  eval $(utils/upgrade-fabric.py http://$ROOT_IP:8181/jolokia restapi $FUSEVERSION)
+  utils/upgrade-fabric.py http://$ROOT_IP:8181/jolokia emailroute $FUSEVERSION
 }
 
 upgrade_openshift() {
