@@ -4,6 +4,8 @@ PREFIX=${PREFIX:-$(utils/rnd.py)}
 VERSION=${VERSION:-0.1-SNAPSHOT}
 LITE=${LITE:-yes}
 
+FUSEVERSION=${VERSION//-/_}
+
 if [ -z $OS_AUTH_URL ]; then
   echo "error: must set OpenStack credentials"
   exit 1
@@ -43,8 +45,8 @@ deploy_app_fabric() {
   pushd $TMPDIR
   git clone -b 1.0 http://admin:admin@$ROOT_IP:8181/git/fabric
   cd fabric
-  git branch $VERSION
-  git checkout $VERSION
+  git branch $FUSEVERSION
+  git checkout $FUSEVERSION
   popd
 
   cp -a ../application/profiles/* $TMPDIR/fabric/fabric/profiles
@@ -67,12 +69,12 @@ EOF
   cd fabric
   git add -A
   git commit -am ticketmonster
-  git push --set-upstream origin $VERSION
+  git push --set-upstream origin $FUSEVERSION
   popd
 
   rm -rf $TMPDIR
 
-  eval $(utils/deploy-fabric.py http://$ROOT_IP:8181/jolokia ticketmonster-rest $PREFIX-monster $VERSION)
+  eval $(utils/deploy-fabric.py http://$ROOT_IP:8181/jolokia ticketmonster-rest $PREFIX-monster $FUSEVERSION)
 }
 
 deploy_app_openshift() {
