@@ -80,7 +80,7 @@ EOF
 
 deploy_app_openshift() {
   if [ $VERSION = "0.1-SNAPSHOT" ]; then
-    URL=$(curl -sI "http://$CI_IP/nexus/service/local/artifact/maven/redirect?r=snapshots&g=com.redhat.ticketmonster&a=webapp&v=$VERSION&e=tar.gz" | sed -ne '/^Location: / { s/^Location: //; p; }')
+    URL=$(curl -sI "http://$CI_IP/nexus/service/local/artifact/maven/redirect?r=snapshots&g=com.redhat.ticketmonster&a=webapp&v=$VERSION&e=tar.gz" | sed -ne '/^Location: / { s/^Location: //; p; }' | tr -d '\r\n')
   else
     URL="http://$CI_IP/nexus/content/repositories/releases/com/redhat/ticketmonster/webapp/$VERSION/webapp-$VERSION.tar.gz"
   fi
