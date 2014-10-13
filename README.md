@@ -4,7 +4,7 @@ Jim Minter <jminter@redhat.com>, 29/09/2014
 
 ### Prerequisites
 
-* You'll need access to an OpenStack tenant.
+* You'll need access to an OpenStack Icehouse tenant (RHELOSP 5).
 * You'll need to clone https://github.com/RedHatEMEA/devopsdemo.git into your own Git repository.
 
 ### Getting started
